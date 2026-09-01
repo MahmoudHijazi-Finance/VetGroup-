@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -672,7 +673,7 @@ function renderBulk(){
     <div class="bulk-row${row.warn||!row.procedure?' warn':''}">
       <div class="bulk-row-top">
         <input type="text" class="bulk-row-proc" value="${row.procedure}" placeholder="${t().procedure}" oninput="updateBulkRow('${row.id}','procedure',this.value)"/>
-        <input type="number" class="bulk-row-price" value="${row.basePrice}" placeholder="0" oninput="updateBulkRow('${row.id}','basePrice',this.value)"/>
+        <input type="text" inputmode="decimal" autocomplete="off" class="bulk-row-price" value="${row.basePrice}" placeholder="0" oninput="this.value=this.value.replace(/,/g,'.').replace(/[^0-9.]/g,'');updateBulkRow('${row.id}','basePrice',this.value)"/>
         <button class="bulk-row-del" onclick="removeBulkRow('${row.id}')">✕</button>
       </div>
       <div class="bulk-row-bottom">
@@ -726,29 +727,55 @@ function renderForm(){
 
     <!-- Amount (incl. VAT) -->
     <div class="field-label">${t().amountLabel}</div>
-    <input type="number" class="field-input" value="${entryForm.basePrice}" placeholder="0.00" oninput="entryForm.basePrice=this.value;renderPricePreview()"/>
+    <input type="text" inputmode="decimal" autocomplete="off" id="amount-input" class="field-input" value="${entryForm.basePrice}" placeholder="0.00" oninput="handleAmountInput(this)"/>
 
     <!-- Free text: what it's for -->
     <div class="field-label">${t().procedure}</div>
     <textarea class="field-input" style="min-height:64px;resize:vertical" placeholder="${t().procedurePlaceholder}" oninput="entryForm.procedure=this.value">${entryForm.procedure}</textarea>
 
     <!-- Price preview -->
-    ${entryForm.basePrice?`<div class="price-preview">
+    <div id="price-preview-wrap">${entryForm.basePrice?`<div class="price-preview">
       <span style="color:#5a8a68">${t().baseLabel}: ₪${pre.toFixed(2)}</span>
       <span style="color:#5a8a68">${t().vatLabel}: ₪${vat.toFixed(2)}</span>
       <span style="color:#4ade80;font-weight:700">₪${total.toFixed(2)}</span>
-    </div>`:''}
+    </div>`:''}</div>
 
     <!-- Buttons -->
     <div class="bottom-btns">
       <button class="btn-cancel-lg" onclick="closeForm()">${t().cancel}</button>
-      <button class="btn-save${entryForm.customer&&entryForm.basePrice?' ready':' disabled'}" onclick="saveEntry()">${editingId?t().update:t().save}</button>
+      <button id="save-btn" class="btn-save${entryForm.customer&&entryForm.basePrice?' ready':' disabled'}" onclick="saveEntry()">${editingId?t().update:t().save}</button>
     </div>`;
 }
 
-function renderPricePreview(){
-  // lightweight update without full re-render
-  renderForm();
+// Updates the amount field's value + price preview WITHOUT rebuilding
+// modal-body's innerHTML. Replacing the focused <input> node on every
+// keystroke is what was closing the keyboard after each digit.
+function handleAmountInput(el){
+  let v=el.value.replace(/,/g,'.').replace(/[^0-9.]/g,'');
+  const parts=v.split('.');
+  if(parts.length>2) v=parts[0]+'.'+parts.slice(1).join('');
+  if(v!==el.value){
+    const posFromEnd=el.value.length-(el.selectionEnd||el.value.length);
+    el.value=v;
+    const pos=Math.max(0,v.length-posFromEnd);
+    try{el.setSelectionRange(pos,pos);}catch(e){}
+  }
+  entryForm.basePrice=v;
+  updatePricePreview();
+}
+
+function updatePricePreview(){
+  const {pre,vat,total}=calcAmounts(entryForm.basePrice,true);
+  const wrap=document.getElementById('price-preview-wrap');
+  if(wrap){
+    wrap.innerHTML=entryForm.basePrice?`<div class="price-preview">
+      <span style="color:#5a8a68">${t().baseLabel}: ₪${pre.toFixed(2)}</span>
+      <span style="color:#5a8a68">${t().vatLabel}: ₪${vat.toFixed(2)}</span>
+      <span style="color:#4ade80;font-weight:700">₪${total.toFixed(2)}</span>
+    </div>`:'';
+  }
+  const saveBtn=document.getElementById('save-btn');
+  if(saveBtn) saveBtn.className=`btn-save${entryForm.customer&&entryForm.basePrice?' ready':' disabled'}`;
 }
 
 // ── Actions ───────────────────────────────────────────────────────────────────
