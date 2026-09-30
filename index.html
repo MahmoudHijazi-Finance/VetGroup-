@@ -507,13 +507,7 @@ async function toggleMic(){
 }
 
 function onVoiceInput(val){
-  voiceText=val;voiceStatus=val?'typing':'idle';
-  const ta=document.getElementById('voice-textarea');
-  if(ta){ta.className='voice-input'+(val?' typing':'');}
-  clearTimeout(debounceTimer);
-  if(!val.trim()){renderVoiceBox();return;}
-  renderVoiceBox();
-  debounceTimer=setTimeout(()=>applyParsed(val),800);
+  voiceText=val;
 }
 
 function clearVoice(){
@@ -754,7 +748,7 @@ function renderFormModal(){
         <div class="voice-hint-text">${t().voiceHint}</div>
       </div>
       <textarea id="voice-textarea" class="voice-input${voiceStatus==='done'?' done':voiceStatus==='typing'?' typing':''}" rows="2"
-        placeholder="${t().voicePlaceholder}" oninput="onVoiceInput(this.value)">${voiceText}</textarea>
+        placeholder="${t().voicePlaceholder}" oninput="voiceText=this.value" onblur="if(voiceText.trim())applyParsed(voiceText)">${voiceText}</textarea>
       ${voiceText?`<button class="voice-clear" onclick="clearVoice()">✕ ${lang==='he'?'נקה':'Clear'}</button>`:''}
       <div class="mic-row">
         <button class="mic-btn${voiceStatus==='listening'?' listening':''}" onclick="toggleMic()">
@@ -772,7 +766,7 @@ function renderFormModal(){
     <!-- Customer -->
     <div class="field-label">${t().customer}</div>
     <input type="text" class="field-input" id="cust-input" value="${formData.customer}" 
-      placeholder="${t().customerName}" oninput="formData.customer=this.value;updatePricePreview()" list="cust-list"/>
+      placeholder="${t().customerName}" oninput="formData.customer=this.value" onblur="updatePricePreview()" list="cust-list"/>
     <datalist id="cust-list">${allCustNames.map(n=>`<option value="${n}">`).join('')}</datalist>
 
     <!-- Type -->
@@ -793,12 +787,12 @@ function renderFormModal(){
     <!-- Procedure -->
     <div class="field-label">${t().procedure}</div>
     <input type="text" class="field-input" value="${formData.procedure}"
-      placeholder="${t().procedure}" oninput="formData.procedure=this.value;updatePricePreview()" list="proc-list"/>
+      placeholder="${t().procedure}" oninput="formData.procedure=this.value" onblur="updatePricePreview()" list="proc-list"/>
     <datalist id="proc-list">${procs.map(p=>`<option value="${p}">`).join('')}</datalist>
 
     <!-- Price -->
     <div class="field-label">${t().basePrice}</div>
-    <input type="text" inputmode="decimal" class="field-input" id="price-input" value="${formData.basePrice}" placeholder="0.00" oninput="formData.basePrice=this.value;updatePricePreview()"/>
+    <input type="text" inputmode="decimal" class="field-input" id="price-input" value="${formData.basePrice}" placeholder="0.00" oninput="formData.basePrice=this.value" onblur="updatePricePreview()"/>
 
     <!-- VAT toggle -->
     <div class="vat-row">
