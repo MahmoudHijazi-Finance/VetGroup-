@@ -772,7 +772,7 @@ function renderFormModal(){
     <!-- Customer -->
     <div class="field-label">${t().customer}</div>
     <input type="text" class="field-input" id="cust-input" value="${formData.customer}" 
-      placeholder="${t().customerName}" oninput="formData.customer=this.value" list="cust-list"/>
+      placeholder="${t().customerName}" oninput="formData.customer=this.value;updatePricePreview()" list="cust-list"/>
     <datalist id="cust-list">${allCustNames.map(n=>`<option value="${n}">`).join('')}</datalist>
 
     <!-- Type -->
@@ -793,12 +793,12 @@ function renderFormModal(){
     <!-- Procedure -->
     <div class="field-label">${t().procedure}</div>
     <input type="text" class="field-input" value="${formData.procedure}"
-      placeholder="${t().procedure}" oninput="formData.procedure=this.value" list="proc-list"/>
+      placeholder="${t().procedure}" oninput="formData.procedure=this.value;updatePricePreview()" list="proc-list"/>
     <datalist id="proc-list">${procs.map(p=>`<option value="${p}">`).join('')}</datalist>
 
     <!-- Price -->
     <div class="field-label">${t().basePrice}</div>
-    <input type="text" inputmode="decimal" class="field-input" value="${formData.basePrice}" placeholder="0.00" oninput="formData.basePrice=this.value;renderFormModal()"/>
+    <input type="text" inputmode="decimal" class="field-input" id="price-input" value="${formData.basePrice}" placeholder="0.00" oninput="formData.basePrice=this.value;updatePricePreview()"/>
 
     <!-- VAT toggle -->
     <div class="vat-row">
@@ -806,21 +806,40 @@ function renderFormModal(){
       <button class="vat-switch" style="background:${formData.inclVat?'#4ade80':'#1a3d23'}" onclick="formData.inclVat=!formData.inclVat;renderFormModal()">
         <div class="vat-knob" style="left:${formData.inclVat?'22px':'3px'};background:${formData.inclVat?'#0d1a12':'#3a6645'}"></div>
       </button>
-      <span style="font-size:12px;color:#3a6645">
+      <span id="vat-inline" style="font-size:12px;color:#3a6645">
         ${formData.inclVat?t().yes:t().no}${formData.basePrice?' · ₪'+fmt(calcAmounts(formData.basePrice,formData.inclVat).total):''}
       </span>
     </div>
 
-    ${formData.basePrice?`<div class="price-preview">
+    <div id="price-preview-wrap">${formData.basePrice?`<div class="price-preview">
       <span style="color:#5a8a68">${t().baseLabel}: ₪${fmt(pre)}</span>
       <span style="color:#5a8a68">${t().vatLabel}: ₪${fmt(vat)}</span>
       <span style="color:#4ade80;font-weight:700">₪${fmt(total)}</span>
-    </div>`:''}
+    </div>`:''}</div>
 
     <div class="bottom-btns">
       <button class="btn-cancel-lg" onclick="closeModal()">${t().cancel}</button>
-      <button class="btn-save${formData.customer&&formData.procedure&&formData.basePrice?' ready':' disabled'}" onclick="saveEntry()">${t().save}</button>
+      <button id="save-btn" class="btn-save${formData.customer&&formData.procedure&&formData.basePrice?' ready':' disabled'}" onclick="saveEntry()">${t().save}</button>
     </div>`;
+}
+
+function updatePricePreview(){
+  const{pre,vat,total}=calcAmounts(formData.basePrice,formData.inclVat);
+  const wrap=document.getElementById('price-preview-wrap');
+  if(wrap){
+    wrap.innerHTML=formData.basePrice?`<div class="price-preview">
+      <span style="color:#5a8a68">${t().baseLabel}: ₪${fmt(pre)}</span>
+      <span style="color:#5a8a68">${t().vatLabel}: ₪${fmt(vat)}</span>
+      <span style="color:#4ade80;font-weight:700">₪${fmt(total)}</span>
+    </div>`:'';
+  }
+  const vi=document.getElementById('vat-inline');
+  if(vi) vi.textContent=(formData.inclVat?t().yes:t().no)+(formData.basePrice?' · ₪'+fmt(total):'');
+  const sb=document.getElementById('save-btn');
+  if(sb){
+    const ready=formData.customer&&formData.procedure&&formData.basePrice;
+    sb.className='btn-save'+(ready?' ready':' disabled');
+  }
 }
 
 function renderVoiceBox(){
