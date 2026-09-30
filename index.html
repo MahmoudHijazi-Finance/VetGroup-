@@ -734,87 +734,76 @@ function renderFormModal(){
   const {pre,vat,total}=calcAmounts(formData.basePrice,formData.inclVat);
   const allCustNames=getAllCustomers().map(c=>c.name);
 
-  document.getElementById('modal-body').innerHTML=`
-    <!-- Voice Box -->
-    <div class="voice-box">
-      <div class="voice-title">
-        <div class="voice-title-left"><span>🎙</span>${t().voiceTitle}</div>
-        <span class="voice-status" style="color:${voiceStatus==='done'?'#4ade80':voiceStatus==='typing'||voiceStatus==='listening'?'#b8893a':'transparent'}">
-          ${voiceStatus==='done'?t().voiceDone:voiceStatus==='typing'?t().voiceTyping:voiceStatus==='listening'?'🔴':'&nbsp;'}
-        </span>
-      </div>
-      <div class="voice-hint">
-        <div class="voice-hint-icon">💡</div>
-        <div class="voice-hint-text">${t().voiceHint}</div>
-      </div>
-      <textarea id="voice-textarea" class="voice-input${voiceStatus==='done'?' done':voiceStatus==='typing'?' typing':''}" rows="2"
-        placeholder="${t().voicePlaceholder}" oninput="voiceText=this.value" onblur="if(voiceText.trim())applyParsed(voiceText)">${voiceText}</textarea>
-      ${voiceText?`<button class="voice-clear" onclick="clearVoice()">✕ ${lang==='he'?'נקה':'Clear'}</button>`:''}
-      <div class="mic-row">
-        <button class="mic-btn${voiceStatus==='listening'?' listening':''}" onclick="toggleMic()">
-          ${voiceStatus==='listening'?t().micStop:t().micStart}
-        </button>
-      </div>
-    </div>
+  var statusColor = voiceStatus==='done'?'#4ade80':voiceStatus==='typing'||voiceStatus==='listening'?'#b8893a':'transparent';
+  var statusText  = voiceStatus==='done'?t().voiceDone:voiceStatus==='typing'?t().voiceTyping:voiceStatus==='listening'?'🔴':'&nbsp;';
+  var voiceClass  = 'voice-input'+(voiceStatus==='done'?' done':voiceStatus==='typing'?' typing':'');
+  var micClass    = 'mic-btn'+(voiceStatus==='listening'?' listening':'');
+  var clearBtn    = voiceText ? '<button class="voice-clear" onclick="clearVoice()">✕ '+(lang==='he'?'נקה':'Clear')+'</button>' : '';
+  var custOptions = allCustNames.map(function(n){ return '<option value="'+n+'">'; }).join('');
+  var procOptions = procs.map(function(p){ return '<option value="'+p+'">'; }).join('');
+  var typeVetCls  = 'toggle-btn'+(formData.type==='vet'?' active-vet':'');
+  var typeOwCls   = 'toggle-btn'+(formData.type==='owner'?' active-owner':'');
+  var anDogCls    = 'toggle-btn'+(formData.animal==='dog'?' active-animal':'');
+  var anCatCls    = 'toggle-btn'+(formData.animal==='cat'?' active-animal':'');
+  var anOthCls    = 'toggle-btn'+(formData.animal==='other'?' active-animal':'');
+  var vatBg       = formData.inclVat?'#4ade80':'#1a3d23';
+  var knobLeft    = formData.inclVat?'22px':'3px';
+  var knobBg      = formData.inclVat?'#0d1a12':'#3a6645';
+  var vatInline   = (formData.inclVat?t().yes:t().no)+(formData.basePrice?' · ₪'+fmt(calcAmounts(formData.basePrice,formData.inclVat).total):'');
+  var pricePreview= formData.basePrice
+    ? '<div class="price-preview">'
+      +'<span style="color:#5a8a68">'+t().baseLabel+': ₪'+fmt(pre)+'</span>'
+      +'<span style="color:#5a8a68">'+t().vatLabel+': ₪'+fmt(vat)+'</span>'
+      +'<span style="color:#4ade80;font-weight:700">₪'+fmt(total)+'</span>'
+      +'</div>'
+    : '';
+  var saveCls     = 'btn-save'+(formData.customer&&formData.procedure&&formData.basePrice?' ready':' disabled');
 
-    <div class="divider"><div class="divider-line"></div><span class="divider-text">${t().manualEntry}</span><div class="divider-line"></div></div>
-
-    <!-- Date -->
-    <div class="field-label">${t().date}</div>
-    <input type="date" class="field-input" value="${formData.date}" onchange="formData.date=this.value"/>
-
-    <!-- Customer -->
-    <div class="field-label">${t().customer}</div>
-    <input type="text" class="field-input" id="cust-input" value="${formData.customer}" 
-      placeholder="${t().customerName}" oninput="formData.customer=this.value" onblur="updatePricePreview()" list="cust-list"/>
-    <datalist id="cust-list">${allCustNames.map(n=>`<option value="${n}">`).join('')}</datalist>
-
-    <!-- Type -->
-    <div class="field-label">${t().type}</div>
-    <div class="toggle-row">
-      <button class="toggle-btn${formData.type==='vet'?' active-vet':''}" onclick="formData.type='vet';renderFormModal()">${t().vet}</button>
-      <button class="toggle-btn${formData.type==='owner'?' active-owner':''}" onclick="formData.type='owner';renderFormModal()">${t().owner}</button>
-    </div>
-
-    <!-- Animal -->
-    <div class="field-label">${t().animal}</div>
-    <div class="toggle-row">
-      <button class="toggle-btn${formData.animal==='dog'?' active-animal':''}" onclick="formData.animal='dog';renderFormModal()">${t().dog}</button>
-      <button class="toggle-btn${formData.animal==='cat'?' active-animal':''}" onclick="formData.animal='cat';renderFormModal()">${t().cat}</button>
-      <button class="toggle-btn${formData.animal==='other'?' active-animal':''}" onclick="formData.animal='other';renderFormModal()">${t().other}</button>
-    </div>
-
-    <!-- Procedure -->
-    <div class="field-label">${t().procedure}</div>
-    <input type="text" class="field-input" value="${formData.procedure}"
-      placeholder="${t().procedure}" oninput="formData.procedure=this.value" onblur="updatePricePreview()" list="proc-list"/>
-    <datalist id="proc-list">${procs.map(p=>`<option value="${p}">`).join('')}</datalist>
-
-    <!-- Price -->
-    <div class="field-label">${t().basePrice}</div>
-    <input type="text" inputmode="decimal" class="field-input" id="price-input" value="${formData.basePrice}" placeholder="0.00" oninput="formData.basePrice=this.value" onblur="updatePricePreview()"/>
-
-    <!-- VAT toggle -->
-    <div class="vat-row">
-      <span style="font-size:13px;color:#6fcf8a">${t().inclVat}</span>
-      <button class="vat-switch" style="background:${formData.inclVat?'#4ade80':'#1a3d23'}" onclick="formData.inclVat=!formData.inclVat;renderFormModal()">
-        <div class="vat-knob" style="left:${formData.inclVat?'22px':'3px'};background:${formData.inclVat?'#0d1a12':'#3a6645'}"></div>
-      </button>
-      <span id="vat-inline" style="font-size:12px;color:#3a6645">
-        ${formData.inclVat?t().yes:t().no}${formData.basePrice?' · ₪'+fmt(calcAmounts(formData.basePrice,formData.inclVat).total):''}
-      </span>
-    </div>
-
-    <div id="price-preview-wrap">${formData.basePrice?`<div class="price-preview">
-      <span style="color:#5a8a68">${t().baseLabel}: ₪${fmt(pre)}</span>
-      <span style="color:#5a8a68">${t().vatLabel}: ₪${fmt(vat)}</span>
-      <span style="color:#4ade80;font-weight:700">₪${fmt(total)}</span>
-    </div>`:''}</div>
-
-    <div class="bottom-btns">
-      <button class="btn-cancel-lg" onclick="closeModal()">${t().cancel}</button>
-      <button id="save-btn" class="btn-save${formData.customer&&formData.procedure&&formData.basePrice?' ready':' disabled'}" onclick="saveEntry()">${t().save}</button>
-    </div>`;
+  document.getElementById('modal-body').innerHTML =
+    '<div class="voice-box">'
+    +'<div class="voice-title">'
+    +'<div class="voice-title-left"><span>🎙</span>'+t().voiceTitle+'</div>'
+    +'<span class="voice-status" style="color:'+statusColor+'">'+statusText+'</span>'
+    +'</div>'
+    +'<div class="voice-hint"><div class="voice-hint-icon">💡</div><div class="voice-hint-text">'+t().voiceHint+'</div></div>'
+    +'<textarea id="voice-textarea" class="'+voiceClass+'" rows="2" placeholder="'+t().voicePlaceholder+'" oninput="voiceText=this.value" onblur="if(voiceText.trim())applyParsed(voiceText)">'+voiceText+'</textarea>'
+    +clearBtn
+    +'<div class="mic-row"><button class="'+micClass+'" onclick="toggleMic()">'+(voiceStatus==='listening'?t().micStop:t().micStart)+'</button></div>'
+    +'</div>'
+    +'<div class="divider"><div class="divider-line"></div><span class="divider-text">'+t().manualEntry+'</span><div class="divider-line"></div></div>'
+    +'<div class="field-label">'+t().date+'</div>'
+    +'<input type="date" class="field-input" value="'+formData.date+'" onchange="formData.date=this.value"/>'
+    +'<div class="field-label">'+t().customer+'</div>'
+    +'<input type="text" class="field-input" id="cust-input" value="'+formData.customer+'" placeholder="'+t().customerName+'" oninput="formData.customer=this.value" onblur="updatePricePreview()" list="cust-list"/>'
+    +'<datalist id="cust-list">'+custOptions+'</datalist>'
+    +'<div class="field-label">'+t().type+'</div>'
+    +'<div class="toggle-row">'
+    +'<button class="'+typeVetCls+'" onclick="formData.type=\'vet\';renderFormModal()">'+t().vet+'</button>'
+    +'<button class="'+typeOwCls+'" onclick="formData.type=\'owner\';renderFormModal()">'+t().owner+'</button>'
+    +'</div>'
+    +'<div class="field-label">'+t().animal+'</div>'
+    +'<div class="toggle-row">'
+    +'<button class="'+anDogCls+'" onclick="formData.animal=\'dog\';renderFormModal()">'+t().dog+'</button>'
+    +'<button class="'+anCatCls+'" onclick="formData.animal=\'cat\';renderFormModal()">'+t().cat+'</button>'
+    +'<button class="'+anOthCls+'" onclick="formData.animal=\'other\';renderFormModal()">'+t().other+'</button>'
+    +'</div>'
+    +'<div class="field-label">'+t().procedure+'</div>'
+    +'<input type="text" class="field-input" value="'+formData.procedure+'" placeholder="'+t().procedure+'" oninput="formData.procedure=this.value" onblur="updatePricePreview()" list="proc-list"/>'
+    +'<datalist id="proc-list">'+procOptions+'</datalist>'
+    +'<div class="field-label">'+t().basePrice+'</div>'
+    +'<input type="text" inputmode="decimal" class="field-input" id="price-input" value="'+formData.basePrice+'" placeholder="0.00" oninput="formData.basePrice=this.value" onblur="updatePricePreview()"/>'
+    +'<div class="vat-row">'
+    +'<span style="font-size:13px;color:#6fcf8a">'+t().inclVat+'</span>'
+    +'<button class="vat-switch" style="background:'+vatBg+'" onclick="formData.inclVat=!formData.inclVat;renderFormModal()">'
+    +'<div class="vat-knob" style="left:'+knobLeft+';background:'+knobBg+'"></div>'
+    +'</button>'
+    +'<span id="vat-inline" style="font-size:12px;color:#3a6645">'+vatInline+'</span>'
+    +'</div>'
+    +'<div id="price-preview-wrap">'+pricePreview+'</div>'
+    +'<div class="bottom-btns">'
+    +'<button class="btn-cancel-lg" onclick="closeModal()">'+t().cancel+'</button>'
+    +'<button id="save-btn" class="'+saveCls+'" onclick="saveEntry()">'+t().save+'</button>'
+    +'</div>';
 }
 
 function updatePricePreview(){
@@ -898,62 +887,62 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
 }
 
-// ── Init — always load from the canonical Notes data, wipe anything else ────────
-entries=[];customers=[];
-const seed=[
-  // Animall
-  {date:'2026-09-01',customer:'Animall',   type:'vet',animal:'dog',procedure:'שבר טיביה',          basePrice:'2000',inclVat:false},
-  // אשרף  (pre-VAT; notes total 7260 = 800+2500+3960)
-  {date:'2026-09-01',customer:'אשרף',      type:'vet',animal:'dog',procedure:'ציסטוטומיה',          basePrice:'800', inclVat:false},
-  {date:'2026-09-01',customer:'אשרף',      type:'vet',animal:'dog',procedure:'שבר אגן+פימור',       basePrice:'2500',inclVat:false},
-  {date:'2026-09-01',customer:'אשרף',      type:'vet',animal:'dog',procedure:'שעות עבודה 27',       basePrice:'3960',inclVat:false},
-  // Silvia (pre-VAT; notes total 7700 ✓)
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'אולטראסונד',           basePrice:'300', inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'צינור הזנה',           basePrice:'400', inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'אולטראסונדים',         basePrice:'500', inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'אולטראסונד',           basePrice:'300', inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבת',                  basePrice:'1000',inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבר הומרוס',           basePrice:'2000',inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'הסרת מסה',             basePrice:'500', inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבר פימור',            basePrice:'1700',inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שני',                  basePrice:'500', inclVat:false},
-  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבת',                  basePrice:'500', inclVat:false},
-  // סמיח — all prices are pre-VAT as written in notes; parentheses = incl-VAT shown for reference only
-  // Notes total: תשלום במזומן 2100 + העברה 11834 = payments received, not charges — excluded
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי מזומן",     basePrice:'400', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'אנקלוזיה ענבל',       basePrice:'500', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'עיקור גדולה בהריון',  basePrice:'250', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי מזומן",     basePrice:'400', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'קיצור חך רך',         basePrice:'800', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הסרת ראש פימור',      basePrice:'1000',inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הסרת ראש פימור',      basePrice:'1000',inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הרניה סרעפתית חתול',  basePrice:'800', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי",           basePrice:'600', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'פירניאל אורטוסטומיה', basePrice:'1200',inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'שבר פימור מזומן',     basePrice:'1300',inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'טייקא באוזן',         basePrice:'800', inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הסרת ראש פימור',      basePrice:'1000',inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'שבר רדיוס אולנה',     basePrice:'1700',inclVat:false},
-  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי",           basePrice:'600', inclVat:false},
-  // כרמאיל — bulk cat neutering, pre-VAT per batch
-  {date:'2026-07-31',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x29',    basePrice:'2900',inclVat:false},
-  {date:'2026-08-31',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x94',    basePrice:'9400',inclVat:false},
-  {date:'2026-09-08',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x11',    basePrice:'1100',inclVat:false},
-  {date:'2026-09-14',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x7',     basePrice:'700', inclVat:false},
-  {date:'2026-09-29',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x10',    basePrice:'1000',inclVat:false},
-];
-seed.forEach((e,i)=>{
-  const{pre,vat,total}=calcAmounts(e.basePrice,e.inclVat);
-  entries.push({...e,pre,vat,total,id:Date.now()+i});
-});
-customers=[
-  {name:'Animall', type:'vet'},
-  {name:'אשרף',    type:'vet'},
-  {name:'Silvia',  type:'vet'},
-  {name:'סמיח',    type:'vet'},
-  {name:'כרמאיל',  type:'vet'},
-];
-save();
+// ── Init ────────────────────────────────────────────────────────────────────────
+load();
+
+function seedInitialData(){
+  entries=[];customers=[];
+  var seedRows=[
+    {date:'2026-09-01',customer:'Animall',  type:'vet',animal:'dog',procedure:'שבר טיביה',         basePrice:'2000',inclVat:false},
+    {date:'2026-09-01',customer:'אשרף',     type:'vet',animal:'dog',procedure:'ציסטוטומיה',         basePrice:'800', inclVat:false},
+    {date:'2026-09-01',customer:'אשרף',     type:'vet',animal:'dog',procedure:'שבר אגן+פימור',      basePrice:'2500',inclVat:false},
+    {date:'2026-09-01',customer:'אשרף',     type:'vet',animal:'dog',procedure:'שעות עבודה 27',      basePrice:'3960',inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'אולטראסונד',          basePrice:'300', inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'צינור הזנה',          basePrice:'400', inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'אולטראסונדים',        basePrice:'500', inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'אולטראסונד',          basePrice:'300', inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'שבת',                 basePrice:'1000',inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'שבר הומרוס',          basePrice:'2000',inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'הסרת מסה',            basePrice:'500', inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'שבר פימור',           basePrice:'1700',inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'שני',                 basePrice:'500', inclVat:false},
+    {date:'2026-09-01',customer:'Silvia',   type:'vet',animal:'dog',procedure:'שבת',                 basePrice:'500', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:"צ'ריי איי מזומן",    basePrice:'400', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'אנקלוזיה ענבל',      basePrice:'500', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'עיקור גדולה בהריון', basePrice:'250', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:"צ'ריי איי מזומן",    basePrice:'400', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'קיצור חך רך',        basePrice:'800', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'הסרת ראש פימור',     basePrice:'1000',inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'הסרת ראש פימור',     basePrice:'1000',inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'הרניה סרעפתית חתול', basePrice:'800', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:"צ'ריי איי",          basePrice:'600', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'פירניאל אורטוסטומיה',basePrice:'1200',inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'שבר פימור מזומן',    basePrice:'1300',inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'טייקא באוזן',        basePrice:'800', inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'הסרת ראש פימור',     basePrice:'1000',inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:'שבר רדיוס אולנה',    basePrice:'1700',inclVat:false},
+    {date:'2026-09-01',customer:'סמיח',     type:'vet',animal:'dog',procedure:"צ'ריי איי",          basePrice:'600', inclVat:false},
+    {date:'2026-07-31',customer:'כרמאיל',   type:'vet',animal:'cat',procedure:'סירוס חתולים x29',   basePrice:'2900',inclVat:false},
+    {date:'2026-08-31',customer:'כרמאיל',   type:'vet',animal:'cat',procedure:'סירוס חתולים x94',   basePrice:'9400',inclVat:false},
+    {date:'2026-09-08',customer:'כרמאיל',   type:'vet',animal:'cat',procedure:'סירוס חתולים x11',   basePrice:'1100',inclVat:false},
+    {date:'2026-09-14',customer:'כרמאיל',   type:'vet',animal:'cat',procedure:'סירוס חתולים x7',    basePrice:'700', inclVat:false},
+    {date:'2026-09-29',customer:'כרמאיל',   type:'vet',animal:'cat',procedure:'סירוס חתולים x10',   basePrice:'1000',inclVat:false},
+  ];
+  seedRows.forEach(function(e,i){
+    var c=calcAmounts(e.basePrice,e.inclVat);
+    entries.push({date:e.date,customer:e.customer,type:e.type,animal:e.animal,
+      procedure:e.procedure,basePrice:e.basePrice,inclVat:e.inclVat,
+      pre:c.pre,vat:c.vat,total:c.total,id:Date.now()+i});
+  });
+  customers=[
+    {name:'Animall',type:'vet'},{name:'אשרף',type:'vet'},{name:'Silvia',type:'vet'},
+    {name:'סמיח',type:'vet'},{name:'כרמאיל',type:'vet'}
+  ];
+  save();
+}
+
+// Seed only if localStorage was empty (fresh install or cleared)
+if(!entries.length && !customers.length){ seedInitialData(); }
 
 render();
 document.getElementById('logo-img').addEventListener('click',spinLogo);
