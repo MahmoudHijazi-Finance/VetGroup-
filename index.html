@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="VetGroup"/>
@@ -21,155 +19,173 @@
   --gold:#b8893a;--gold2:#e8d5b0;
   --blue:#60a5fa;--red:#f87171;--amber:#f59e0b;
   --text:#e8f5e2;--text2:#6fcf8a;--text3:#5a8a68;--text4:#3a6645;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;overflow:hidden}
-#app{height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative}
+html{height:100%;scroll-padding-top:var(--safe-top);}
+body{height:100%;background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;overflow:hidden;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);}
+#app{height:100%;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;}
 
 /* Scrollable content area */
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:90px}
-.scroll-area::-webkit-scrollbar{display:none}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:100px;}
+.scroll-area::-webkit-scrollbar{display:none;}
 
 /* Header */
-.header{background:linear-gradient(135deg,#0a1f10,#0d2b1a,#0f3320);border-bottom:1px solid var(--border);flex-shrink:0}
-.header-inner{display:flex;align-items:center;justify-content:center;padding:14px 16px 6px;gap:12}
-.logo-img{width:58px;height:58px;border-radius:10px;object-fit:cover;border:2px solid #b8893a44;box-shadow:0 2px 12px #b8893a33;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
-.header-text{flex:1}
-.header-name{font-size:16px;font-weight:800;color:var(--gold2);letter-spacing:.2px;line-height:1.2}
-.header-brand{font-size:12px;font-weight:600;color:var(--gold);letter-spacing:2px;margin-top:1px}
-.header-count{font-size:11px;color:#4ade8066;margin-top:3px}
-.lang-btn{background:var(--bg4);border:1px solid var(--border2);color:var(--green2);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
+.header{background:linear-gradient(135deg,#0a1f10,#0d2b1a,#0f3320);border-bottom:1px solid var(--border);flex-shrink:0;}
+.header-inner{display:flex;align-items:center;justify-content:center;padding:14px 16px 6px;gap:12px;}
+.logo-img{width:52px;height:52px;border-radius:10px;object-fit:cover;border:2px solid #b8893a44;box-shadow:0 2px 12px #b8893a33;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.56,.64,1);flex-shrink:0;}
+.header-text{flex:1;}
+.header-name{font-size:16px;font-weight:800;color:var(--gold2);letter-spacing:.2px;line-height:1.2;}
+.header-brand{font-size:12px;font-weight:600;color:var(--gold);letter-spacing:2px;margin-top:1px;}
+.header-sub{font-size:11px;color:#4ade8066;margin-top:3px;}
+.lang-btn{background:var(--bg4);border:1px solid var(--border2);color:var(--green2);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0;}
 
-/* Tabs */
-.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0}
-.tab-btn{flex:1;padding:11px 0;background:none;border:none;color:var(--text3);font-size:14px;font-weight:400;border-bottom:2px solid transparent;cursor:pointer;font-family:inherit;transition:all .2s}
-.tab-btn.active{color:var(--green);font-weight:700;border-bottom-color:var(--green)}
+/* === HOME SCREEN — Customer Grid === */
+.home-search{padding:12px 14px 8px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.search-input{width:100%;padding:10px 14px;background:var(--bg4);border:1px solid var(--border2);color:var(--text);border-radius:10px;font-size:14px;outline:none;font-family:inherit;-webkit-appearance:none;}
+.search-input:focus{border-color:var(--green);}
+.search-input::placeholder{color:var(--text4);}
 
-/* Month filter */
-.month-filter{padding:10px 14px;background:var(--bg2);border-bottom:1px solid #1a3020;display:flex;gap:7px;overflow-x:auto;align-items:center;flex-shrink:0}
-.month-filter::-webkit-scrollbar{display:none}
-.month-chip{white-space:nowrap;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg4);color:var(--green2);font-size:12px;font-weight:400;cursor:pointer;font-family:inherit;transition:all .15s}
-.month-chip.active{background:var(--green);color:var(--bg);font-weight:700;border-color:var(--green)}
+.home-stats{display:flex;gap:0;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
+.stat-chip{flex:1;text-align:center;padding:8px 4px;}
+.stat-chip .num{font-size:20px;font-weight:800;color:var(--green);}
+.stat-chip .lbl{font-size:10px;color:var(--text4);margin-top:1px;}
+.stat-sep{width:1px;background:var(--border);margin:8px 0;}
 
-/* Entry cards */
-.entry-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin:0 14px 10px;position:relative;animation:fadeIn .2s ease}
-.entry-row{display:flex;justify-content:space-between;align-items:flex-start}
-.entry-name{font-weight:700;font-size:15px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.type-badge{font-size:11px;border-radius:6px;padding:2px 7px;font-weight:600}
-.entry-proc{font-size:13px;color:var(--green2);margin-top:4px}
-.entry-date{font-size:12px;color:var(--text4);margin-top:3px}
-.entry-total{font-size:18px;font-weight:700;color:var(--green);text-align:left}
-.entry-vat{font-size:11px;color:var(--text4)}
-.del-btn{position:absolute;top:10px;left:10px;background:none;border:none;color:var(--text4);font-size:16px;cursor:pointer;line-height:1;padding:4px}
-.del-confirm{display:flex;gap:8px;margin-top:10px;justify-content:flex-end}
-.btn-sm{border-radius:8px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:600;border:1px solid}
-.btn-cancel{background:var(--bg4);border-color:var(--border2);color:var(--green2)}
-.btn-del{background:#3d1a1a;border-color:#6b3030;color:var(--red)}
+.customer-grid{padding:12px 14px;}
+.customer-card-home{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:13px;}
+.customer-card-home:active{transform:scale(.98);border-color:var(--green3);}
+.cust-avatar{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--bg4),#2a5035);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--green2);flex-shrink:0;border:1px solid var(--border2);}
+.cust-info{flex:1;min-width:0;}
+.cust-name{font-size:16px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cust-meta{font-size:12px;color:var(--text3);margin-top:3px;}
+.cust-total-home{text-align:left;flex-shrink:0;}
+.cust-total-num{font-size:18px;font-weight:700;color:var(--green);}
+.cust-total-lbl{font-size:10px;color:var(--text4);margin-top:1px;}
+.cust-arrow{font-size:16px;color:var(--text4);margin-right:-2px;}
 
-/* Summary */
-.summary-card{background:linear-gradient(135deg,#0f3320,#1a4a28);border:1px solid var(--border2);border-radius:14px;padding:18px;margin:14px 14px 10px}
-.summary-total{font-size:34px;font-weight:700;color:var(--green)}
-.summary-meta{display:flex;gap:20px;margin-top:8px}
-.meta-item .label{font-size:11px;color:var(--text4)}
-.meta-item .val{font-size:14px;font-weight:600}
-.customer-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin:0 14px 10px}
-.cust-lines{margin-top:8px;border-top:1px solid #1a3020;padding-top:8px}
-.cust-line{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);padding:4px 0}
-.cust-line-del{color:var(--text4);cursor:pointer;padding:2px 6px;flex-shrink:0;font-size:13px}
-.export-btn{display:block;width:calc(100% - 28px);margin:4px 14px;padding:13px;background:var(--bg4);border:1px solid var(--border2);color:var(--green);border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center}
-.empty{text-align:center;color:var(--text4);padding:50px 0;font-size:15px}
+.no-customers{text-align:center;padding:60px 20px;color:var(--text4);}
+.no-customers .icon{font-size:40px;margin-bottom:12px;}
+.no-customers p{font-size:15px;}
+
+/* New customer inline button */
+.new-cust-btn{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1.5px dashed var(--border2);border-radius:14px;padding:13px 14px;margin-bottom:10px;cursor:pointer;color:var(--green2);font-size:14px;font-weight:600;font-family:inherit;width:100%;transition:border-color .15s;}
+.new-cust-btn:active{border-color:var(--green);}
+
+/* === CUSTOMER DETAIL SCREEN === */
+.customer-header{background:linear-gradient(135deg,#0a2510,#112e18);border-bottom:1px solid var(--border2);flex-shrink:0;padding:14px 16px 10px;}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--green2);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;padding:0;margin-bottom:10px;}
+.cust-detail-top{display:flex;align-items:center;gap:12px;}
+.cust-detail-avatar{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--bg4),#2a5035);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--green2);border:1px solid var(--border2);flex-shrink:0;}
+.cust-detail-info{flex:1;}
+.cust-detail-name{font-size:20px;font-weight:800;color:var(--text);}
+.cust-detail-meta{font-size:12px;color:var(--text3);margin-top:3px;}
+.cust-total-block{text-align:left;}
+.cust-total-big{font-size:24px;font-weight:700;color:var(--green);}
+.cust-total-sub{font-size:10px;color:var(--text4);}
+
+/* Month filter for detail */
+.month-filter{padding:10px 14px;background:var(--bg2);border-bottom:1px solid #1a3020;display:flex;gap:7px;overflow-x:auto;align-items:center;flex-shrink:0;}
+.month-filter::-webkit-scrollbar{display:none;}
+.month-chip{white-space:nowrap;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg4);color:var(--green2);font-size:12px;font-weight:400;cursor:pointer;font-family:inherit;transition:all .15s;}
+.month-chip.active{background:var(--green);color:var(--bg);font-weight:700;border-color:var(--green);}
+
+/* Service entry cards */
+.entry-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin:0 14px 10px;position:relative;animation:fadeIn .2s ease;}
+.entry-row{display:flex;justify-content:space-between;align-items:flex-start;}
+.entry-proc{font-size:15px;font-weight:700;color:var(--text);}
+.entry-animal{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);margin-top:3px;}
+.type-badge{font-size:11px;border-radius:6px;padding:2px 7px;font-weight:600;margin-right:5px;}
+.entry-date{font-size:12px;color:var(--text4);margin-top:3px;}
+.entry-amount{text-align:left;flex-shrink:0;}
+.entry-total{font-size:18px;font-weight:700;color:var(--green);}
+.entry-vat{font-size:11px;color:var(--text4);}
+
+/* Edit / delete actions on entry card */
+.entry-actions{display:flex;gap:6px;margin-top:10px;justify-content:flex-end;}
+.btn-xs{border-radius:7px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:600;border:1px solid;transition:opacity .15s;}
+.btn-xs:active{opacity:.7;}
+.btn-edit{background:var(--bg4);border-color:var(--border2);color:var(--green2);}
+.btn-del{background:#3d1a1a;border-color:#6b3030;color:var(--red);}
+.btn-cancel{background:var(--bg4);border-color:var(--border2);color:var(--green2);}
+.del-confirm{display:flex;gap:8px;margin-top:10px;justify-content:flex-end;}
+
+/* Summary strip inside detail */
+.detail-summary{background:linear-gradient(135deg,#0f3320,#1a4a28);border-bottom:1px solid var(--border2);padding:14px 16px;flex-shrink:0;display:flex;gap:20px;}
+.ds-item .lbl{font-size:10px;color:var(--text4);}
+.ds-item .val{font-size:16px;font-weight:700;color:var(--green);}
+
+/* Export btn */
+.export-btn{display:block;width:calc(100% - 28px);margin:4px 14px;padding:13px;background:var(--bg4);border:1px solid var(--border2);color:var(--green);border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;}
+
+.empty{text-align:center;color:var(--text4);padding:40px 20px;font-size:15px;}
 
 /* FAB */
-.fab{position:fixed;bottom:24px;right:24px;background:var(--green);color:var(--bg);border:none;border-radius:16px;padding:14px 22px;font-size:15px;font-weight:700;box-shadow:0 4px 20px #4ade8055;cursor:pointer;font-family:inherit;z-index:100;transition:transform .15s}
-.fab:active{transform:scale(.95)}
-.fab2{position:fixed;bottom:82px;right:24px;background:var(--bg4);color:var(--green2);border:1px solid var(--border2);border-radius:16px;padding:11px 18px;font-size:13px;font-weight:600;box-shadow:0 4px 16px #00000055;cursor:pointer;font-family:inherit;z-index:100;transition:transform .15s}
-.fab2:active{transform:scale(.95)}
-.bulk-textarea{width:100%;min-height:140px;padding:11px 12px;background:var(--bg4);border:1px solid var(--border2);color:var(--text);border-radius:10px;font-size:13px;margin-bottom:13px;outline:none;font-family:inherit;resize:vertical}
-.bulk-textarea:focus{border-color:var(--green)}
-.bulk-row{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:9px}
-.bulk-row.warn{border-color:var(--amber)}
-.bulk-row-top{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.bulk-row-proc{flex:1;padding:8px 10px;background:var(--bg4);border:1px solid var(--border2);color:var(--text);border-radius:8px;font-size:13px;outline:none;font-family:inherit}
-.bulk-row-proc:focus{border-color:var(--green)}
-.bulk-row-price{width:76px;padding:8px 8px;background:var(--bg4);border:1px solid var(--border2);color:var(--text);border-radius:8px;font-size:13px;outline:none;font-family:inherit;text-align:center}
-.bulk-row-del{background:none;border:none;color:var(--text4);font-size:16px;cursor:pointer;padding:2px 4px;flex-shrink:0}
-.bulk-row-bottom{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.bulk-mini-toggle{padding:5px 9px;border-radius:8px;cursor:pointer;font-weight:600;font-size:11px;font-family:inherit;border:1px solid var(--border2);background:var(--bg4);color:var(--text3)}
-.bulk-mini-toggle.active-animal{border-color:var(--green);background:#4ade8022;color:var(--green)}
-.bulk-row-date{padding:5px 6px;background:var(--bg4);border:1px solid var(--border2);color:var(--text3);border-radius:8px;font-size:11px;outline:none;font-family:inherit}
-.bulk-warn-badge{font-size:10px;color:var(--amber);font-weight:600}
-.bulk-addrow{width:100%;padding:10px;background:none;border:1px dashed var(--border2);color:var(--text3);border-radius:10px;font-size:12px;cursor:pointer;font-family:inherit;margin-bottom:13px}
-.customer-suggestions{margin-top:-8px;margin-bottom:13px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;overflow:hidden;max-height:180px;overflow-y:auto}
-.customer-suggestion{padding:10px 12px;font-size:13px;color:var(--text2);cursor:pointer;border-bottom:1px solid var(--border)}
-.customer-suggestion:last-child{border-bottom:none}
-.customer-suggestion:active{background:var(--bg4)}
+.fab{position:fixed;bottom:calc(24px + var(--safe-bottom));left:50%;transform:translateX(-50%);max-width:452px;width:calc(100% - 28px);background:var(--green);color:var(--bg);border:none;border-radius:14px;padding:15px 22px;font-size:15px;font-weight:700;box-shadow:0 4px 20px #4ade8055;cursor:pointer;font-family:inherit;z-index:100;transition:transform .15s;}
+.fab:active{transform:translateX(-50%) scale(.97);}
 
 /* Modal */
-.modal-overlay{position:fixed;inset:0;background:#000000bb;z-index:200;display:flex;align-items:flex-end}
-.modal{background:var(--bg2);border-radius:20px 20px 0 0;padding:22px 16px 36px;width:100%;max-height:92vh;overflow-y:auto;border:1px solid var(--border);border-bottom:none;-webkit-overflow-scrolling:touch}
-.modal::-webkit-scrollbar{display:none}
-.modal-title{font-weight:700;font-size:17px;margin-bottom:16px;color:var(--green)}
+.modal-overlay{position:fixed;inset:0;background:#000000bb;z-index:200;display:flex;align-items:flex-end;}
+.modal{background:var(--bg2);border-radius:20px 20px 0 0;padding:22px 16px calc(36px + var(--safe-bottom));width:100%;max-height:92vh;overflow-y:auto;border:1px solid var(--border);border-bottom:none;-webkit-overflow-scrolling:touch;}
+.modal::-webkit-scrollbar{display:none;}
+.modal-title{font-weight:700;font-size:17px;margin-bottom:16px;color:var(--green);}
+
+/* New customer name modal */
+.cust-name-modal{}
 
 /* Voice box */
-.voice-box{background:linear-gradient(135deg,#0a2510,#112e18);border:2px solid var(--border2);border-radius:16px;padding:15px;margin-bottom:18px}
-.voice-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.voice-title-left{display:flex;align-items:center;gap:7px;font-weight:700;font-size:15px;color:var(--green)}
-.voice-status{font-size:12px;font-weight:600}
-.voice-hint{background:#0d1f10;border-radius:10px;padding:9px 11px;margin-bottom:10px;display:flex;align-items:center;gap:9px}
-.voice-hint-icon{font-size:22px;flex-shrink:0}
-.voice-hint-text{font-size:11px;color:var(--green2);line-height:1.5}
-.voice-input{width:100%;padding:13px;background:var(--bg4);border:2px solid var(--border2);color:var(--text);border-radius:12px;font-size:15px;outline:none;line-height:1.6;font-family:'Heebo',sans-serif;resize:none;transition:border-color .3s;-webkit-appearance:none}
-.voice-input:focus{border-color:var(--green)}
-.voice-input.typing{border-color:var(--gold)}
-.voice-input.done{border-color:var(--green)}
-.voice-input::placeholder{color:var(--text4)}
-.voice-clear{margin-top:5px;background:none;border:none;color:var(--text4);font-size:12px;cursor:pointer;padding:0;font-family:inherit}
-
-/* Mic button */
-.mic-row{display:flex;gap:8px;margin-top:10px}
-.mic-btn{flex:1;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--green);background:linear-gradient(135deg,#0f3320,#1a4a28);color:var(--green);transition:all .2s}
-.mic-btn.listening{background:#3d0f0f;border-color:var(--red);color:var(--red);animation:pulse 1s infinite}
-.mic-btn:active{transform:scale(.97)}
+.voice-box{background:linear-gradient(135deg,#0a2510,#112e18);border:2px solid var(--border2);border-radius:16px;padding:15px;margin-bottom:18px;}
+.voice-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.voice-title-left{display:flex;align-items:center;gap:7px;font-weight:700;font-size:15px;color:var(--green);}
+.voice-status{font-size:12px;font-weight:600;}
+.voice-hint{background:#0d1f10;border-radius:10px;padding:9px 11px;margin-bottom:10px;display:flex;align-items:center;gap:9px;}
+.voice-hint-icon{font-size:22px;flex-shrink:0;}
+.voice-hint-text{font-size:11px;color:var(--green2);line-height:1.5;}
+.voice-input{width:100%;padding:13px;background:var(--bg4);border:2px solid var(--border2);color:var(--text);border-radius:12px;font-size:15px;outline:none;line-height:1.6;font-family:'Heebo',sans-serif;resize:none;transition:border-color .3s;-webkit-appearance:none;}
+.voice-input:focus{border-color:var(--green);}
+.voice-input.typing{border-color:var(--gold);}
+.voice-input.done{border-color:var(--green);}
+.voice-input::placeholder{color:var(--text4);}
+.voice-clear{margin-top:5px;background:none;border:none;color:var(--text4);font-size:12px;cursor:pointer;padding:0;font-family:inherit;}
+.mic-row{display:flex;gap:8px;margin-top:10px;}
+.mic-btn{flex:1;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--green);background:linear-gradient(135deg,#0f3320,#1a4a28);color:var(--green);transition:all .2s;}
+.mic-btn.listening{background:#3d0f0f;border-color:var(--red);color:var(--red);animation:pulse 1s infinite;}
+.mic-btn:active{transform:scale(.97);}
 
 /* Divider */
-.divider{display:flex;align-items:center;gap:10px;margin:4px 0 16px}
-.divider-line{flex:1;height:1px;background:var(--border)}
-.divider-text{color:var(--text4);font-size:12px}
+.divider{display:flex;align-items:center;gap:10px;margin:4px 0 16px;}
+.divider-line{flex:1;height:1px;background:var(--border);}
+.divider-text{color:var(--text4);font-size:12px;}
 
 /* Form fields */
-.field-label{font-size:12px;color:var(--text3);margin-bottom:5px;font-weight:500}
-.field-input{width:100%;padding:11px 12px;background:var(--bg4);border:1px solid var(--border2);color:var(--text);border-radius:10px;font-size:14px;margin-bottom:13px;outline:none;font-family:inherit;-webkit-appearance:none}
-.field-input:focus{border-color:var(--green)}
-select.field-input{cursor:pointer}
-select.field-input option{background:var(--bg4)}
-.toggle-row{display:flex;gap:8px;margin-bottom:13px}
-.toggle-btn{flex:1;padding:10px;border-radius:10px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;border:1px solid var(--border2);background:var(--bg4);color:var(--text3);transition:all .15s}
-.toggle-btn.active-vet{border-color:var(--green);background:#4ade8022;color:var(--green)}
-.toggle-btn.active-owner{border-color:var(--blue);background:#60a5fa22;color:var(--blue)}
-.toggle-btn.active-animal{border-color:var(--green);background:#4ade8022;color:var(--green)}
+.field-label{font-size:12px;color:var(--text3);margin-bottom:5px;font-weight:500;}
+.field-input{width:100%;padding:11px 12px;background:var(--bg4);border:1px solid var(--border2);color:var(--text);border-radius:10px;font-size:14px;margin-bottom:13px;outline:none;font-family:inherit;-webkit-appearance:none;}
+.field-input:focus{border-color:var(--green);}
+select.field-input{cursor:pointer;}
+select.field-input option{background:var(--bg4);}
+.toggle-row{display:flex;gap:8px;margin-bottom:13px;}
+.toggle-btn{flex:1;padding:10px;border-radius:10px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;border:1px solid var(--border2);background:var(--bg4);color:var(--text3);transition:all .15s;}
+.toggle-btn.active-vet{border-color:var(--green);background:#4ade8022;color:var(--green);}
+.toggle-btn.active-owner{border-color:var(--blue);background:#60a5fa22;color:var(--blue);}
+.toggle-btn.active-animal{border-color:var(--green);background:#4ade8022;color:var(--green);}
 
 /* VAT toggle */
-.vat-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.vat-switch{width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
-.vat-knob{position:absolute;top:3px;width:18px;height:18px;border-radius:50%;transition:left .2s}
+.vat-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.vat-switch{width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.vat-knob{position:absolute;top:3px;width:18px;height:18px;border-radius:50%;transition:left .2s;}
 
 /* Price preview */
-.price-preview{background:var(--bg4);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;font-size:13px}
+.price-preview{background:var(--bg4);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;font-size:13px;}
 
 /* Bottom buttons */
-.bottom-btns{display:flex;gap:10px;margin-top:4px}
-.btn-cancel-lg{flex:1;padding:13px;background:var(--bg4);border:1px solid var(--border2);color:var(--green2);border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
-.btn-save{flex:2;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
-.btn-save.ready{background:var(--green);color:var(--bg)}
-.btn-save.disabled{background:var(--bg4);color:var(--text4);cursor:default}
-
-/* Install banner */
-
-.install-text{flex:1;font-size:12px;color:var(--gold2);line-height:1.5}
-.install-dismiss{background:none;border:none;color:var(--text4);font-size:18px;cursor:pointer;padding:0}
+.bottom-btns{display:flex;gap:10px;margin-top:4px;}
+.btn-cancel-lg{flex:1;padding:13px;background:var(--bg4);border:1px solid var(--border2);color:var(--green2);border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;}
+.btn-save{flex:2;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn-save.ready{background:var(--green);color:var(--bg);}
+.btn-save.disabled{background:var(--bg4);color:var(--text4);cursor:default;}
 
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 #f8717166}50%{box-shadow:0 0 0 16px #f8717100}}
-@keyframes shimmer{0%,100%{opacity:.6}50%{opacity:1}}
 </style>
 </head>
 <body>
@@ -180,119 +196,135 @@ select.field-input option{background:var(--bg4)}
       <div class="header-text">
         <div class="header-name" id="header-name">ד״ר באסל חג׳אזי</div>
         <div class="header-brand">VET GROUP</div>
-        <div class="header-count" id="header-count">0 רשומות</div>
+        <div class="header-sub" id="header-sub">0 לקוחות</div>
       </div>
       <button class="lang-btn" id="lang-btn" onclick="toggleLang()">EN</button>
     </div>
   </div>
-  <div class="tabs">
-    <button class="tab-btn active" id="tab-log" onclick="setTab('log')">יומן</button>
-    <button class="tab-btn" id="tab-summary" onclick="setTab('summary')">סיכום חודשי</button>
+
+  <!-- HOME view -->
+  <div id="view-home" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="home-search">
+      <input type="text" class="search-input" id="search-input" placeholder="חפש לקוח..." oninput="renderHome()"/>
+    </div>
+    <div class="home-stats" id="home-stats"></div>
+    <div class="scroll-area" id="home-scroll">
+      <div class="customer-grid" id="customer-grid"></div>
+    </div>
+    <button class="fab" id="fab-home" onclick="openNewCustomerOrEntry()">+ הוסף שירות</button>
   </div>
-  <div class="month-filter" id="month-filter"></div>
-  <div class="scroll-area" id="scroll-area">
-    
-    <div id="tab-content"></div>
+
+  <!-- CUSTOMER DETAIL view -->
+  <div id="view-detail" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="customer-header">
+      <button class="back-btn" onclick="goHome()"><span id="back-btn-text">‹ כל הלקוחות</span></button>
+      <div class="cust-detail-top">
+        <div class="cust-detail-avatar" id="detail-avatar">?</div>
+        <div class="cust-detail-info">
+          <div class="cust-detail-name" id="detail-name">—</div>
+          <div class="cust-detail-meta" id="detail-meta">—</div>
+        </div>
+        <div class="cust-total-block">
+          <div class="cust-total-big" id="detail-total">₪0</div>
+          <div class="cust-total-sub" id="detail-total-sub">סה״כ</div>
+        </div>
+      </div>
+    </div>
+    <div class="month-filter" id="detail-month-filter"></div>
+    <div class="scroll-area" id="detail-scroll">
+      <div id="detail-content"></div>
+    </div>
+    <button class="fab" id="fab-detail" onclick="openAddService()">+ הוסף שירות</button>
   </div>
-  <button class="fab2" id="fab2" onclick="openBulk()">📋 ייבוא רשימה</button>
-  <button class="fab" id="fab" onclick="openForm()">+ הוסף רשומה</button>
 </div>
 
+<!-- Modal -->
 <div class="modal-overlay" id="modal" style="display:none" onclick="handleOverlayClick(event)">
   <div class="modal" id="modal-inner">
-    <div class="modal-title" id="modal-title">+ הוסף רשומה</div>
+    <div class="modal-title" id="modal-title">הוסף רשומה</div>
     <div id="modal-body"></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="bulk-modal" style="display:none" onclick="handleBulkOverlayClick(event)">
-  <div class="modal" id="bulk-modal-inner">
-    <div class="modal-title" id="bulk-modal-title"></div>
-    <div id="bulk-modal-body"></div>
-  </div>
-</div>
-
 <script>
-// ── State ────────────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'vetbilling_pwa_v1';
+// ── State ──────────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'vetbilling_pwa_v2';
 const VAT = 0.18;
 let lang = 'he';
 let entries = [];
-let tab = 'log';
+let customers = []; // [{name, type}] — derived from entries + any explicitly added
+let currentView = 'home'; // 'home' | 'detail'
+let selectedCustomer = null;
 let filterMonth = 'all';
-let formOpen = false;
 let deleteId = null;
+let editId = null;
+let formOpen = false;
 let logoSpins = 0;
-let showInstallBanner = true;
-let expandedCustomers = new Set();
 
-// Form
-let entryForm = {date: todayStr(), customer:'', procedure:'', basePrice:''};
-let editingId = null;
+// Voice
+let voiceText = '';
+let voiceStatus = 'idle'; // idle | listening | done | typing
+let recognition = null;
+let debounceTimer = null;
 
-// Bulk import
-let bulkOpen = false;
-let bulkStep = 'paste'; // paste | review
-let bulkCustomer = '';
-let bulkType = 'owner';
-let bulkRawText = '';
-let bulkRows = [];
+// Form state
+let formData = {date: todayStr(), customer:'', type:'vet', animal:'dog', procedure:'', basePrice:'', inclVat:true};
 
-// ── Data ─────────────────────────────────────────────────────────────────────
+// ── Data ───────────────────────────────────────────────────────────────────────
 const PROCS = {
   he:["סירוס כלב","עיקור כלבה","סירוס חתול","עיקור חתולה","ציסטוטומי","ציסטוטומיה זכר","הסרת ראש פימור","תיקון שבר","הרניה סרעפתית","הסרת גידול","טיפול בפצע","קולופקסי","אנקלוטציה","ניקוי שיניים","פלאפ לחמית","שבר טיבה","שבר הומרוס","שבר פימור","שבר לסת","אחר"],
   en:["Dog neutering","Dog spaying","Cat neutering","Cat spaying","Cystotomy F","Cystotomy M","Femoral head removal","Fracture repair","Diaphragmatic hernia","Mass removal","Wound treatment","Colopexy","Enucleation","Teeth cleaning","Conjunctival flap","Tibia fracture","Humerus fracture","Femur fracture","Jaw fracture","Other"]
 };
 const T = {
   he:{
-    title:'ד״ר באסל חג׳אזי', add:'+ הוסף רשומה', log:'יומן', summary:'סיכום לקוחות',
-    entries:'רשומות', allMonths:'כל החודשים', grandTotal:'סה״כ', vatLabel:'מעמ 18%',
-    baseLabel:'לפני מעמ', exportCSV:'ייצא CSV', noEntries:'אין רשומות עדיין',
+    title:'ד״ר באסל חג׳אזי', addService:'+ הוסף שירות', addEntry:'+ הוסף רשומה',
+    allCustomers:'כל הלקוחות', customers:'לקוחות', entries:'רשומות',
+    allMonths:'כל החודשים', grandTotal:'סה״כ', vatLabel:'מעמ 18%', baseLabel:'לפני מעמ',
+    exportCSV:'ייצא CSV', noEntries:'אין רשומות עדיין', noCustomers:'אין לקוחות עדיין',
     vet:'וטרינר מפנה', owner:'בעל חיה', dog:'כלב 🐕', cat:'חתול 🐈', other:'אחר 🐾',
     date:'תאריך', customer:'שם לקוח', type:'סוג לקוח', animal:'בעל חיים',
     procedure:'פרוצדורה', basePrice:'מחיר (₪)', inclVat:'כולל מעמ?', yes:'כן', no:'לא',
-    save:'שמור', cancel:'ביטול', delete:'מחק',
-    amountLabel:'סכום (כולל מעמ) ₪', procedurePlaceholder:'לדוגמה: ניתוח, בדיקה, חיסון...',
-    update:'עדכן', updateTitle:'✏️ עדכן רשומה',
-    installBanner:'💡 שמור כאפליקציה: לחץ על 󰖀 ← "הוסף למסך הבית"',
-    lang:'EN',
-    bulkFab:'📋 ייבוא רשימה', bulkTitlePaste:'📋 ייבוא רשימה', bulkTitleReview:'📋 בדיקה לפני שמירה',
-    bulkCustomerLabel:'שם לקוח', bulkTypeLabel:'סוג לקוח',
-    bulkPasteHint:'הדבק כאן את הרשימה שקיבלת (פרוצדורה + מחיר בכל שורה)',
-    bulkPastePlaceholder:'עיקור כלבה 400\nשבר פימור 900\nאולטראסונד 200',
-    bulkParseBtn:'פרש רשימה', bulkBack:'← חזרה לעריכת הטקסט',
-    bulkAddRow:'+ הוסף שורה ידנית', bulkSaveAll:'שמור הכל',
-    bulkNoRows:'לא נמצאו שורות. ערוך את הטקסט ונסה שוב.',
-    bulkWarnAnimal:'⚠ בדוק סוג בעל חיים', bulkWarnTotal:'⚠ ייתכן שזו שורת סיכום ולא רשומה',
-    bulkWarnEmpty:'⚠ יש להשלים פרוצדורה', bulkWarnNumLeft:'⚠ בדוק את המחיר',
-    bulkNeedCustomer:'יש להזין שם לקוח'
+    save:'שמור', cancel:'ביטול', delete:'מחק', edit:'ערוך',
+    voiceTitle:'🎙 רשומה קולית',
+    micStart:'🎙 לחץ להקלטה', micStop:'🔴 מקשיב... לחץ לסיום',
+    voiceHint:'לחץ הקלטה ← דבר ← השדות יתמלאו אוטומטית',
+    voiceOr:'או הקלד ישירות',
+    voicePlaceholder:'למשל: "סילביה סירוס כלב 500 שח"',
+    voiceDone:'✅ מולא! ערוך אם צריך',
+    voiceTyping:'⌛ מזהה...',
+    manualEntry:'✏️ הזנה ידנית',
+    newCustomer:'לקוח חדש',
+    customerName:'שם הלקוח',
+    backToList:'‹ כל הלקוחות',
+    searchPlaceholder:'חפש לקוח...',
+    lang:'EN', total:'סה״כ', services:'שירותים', lastService:'שירות אחרון'
   },
   en:{
-    title:'Dr. Basel Hajazi', add:'+ Add Entry', log:'Log', summary:'Customer Summary',
-    entries:'entries', allMonths:'All Months', grandTotal:'Grand Total', vatLabel:'VAT 18%',
-    baseLabel:'Pre-VAT', exportCSV:'Export CSV', noEntries:'No entries yet',
+    title:'Dr. Basel Hajazi', addService:'+ Add Service', addEntry:'+ Add Entry',
+    allCustomers:'All Customers', customers:'customers', entries:'entries',
+    allMonths:'All Months', grandTotal:'Grand Total', vatLabel:'VAT 18%', baseLabel:'Pre-VAT',
+    exportCSV:'Export CSV', noEntries:'No entries yet', noCustomers:'No customers yet',
     vet:'Referring Vet', owner:'Pet Owner', dog:'Dog 🐕', cat:'Cat 🐈', other:'Other 🐾',
     date:'Date', customer:'Customer Name', type:'Customer Type', animal:'Animal',
     procedure:'Procedure', basePrice:'Price (₪)', inclVat:'Incl. VAT?', yes:'Yes', no:'No',
-    save:'Save', cancel:'Cancel', delete:'Delete',
-    amountLabel:'Amount (incl. VAT) ₪', procedurePlaceholder:'e.g. surgery, check-up, vaccine...',
-    update:'Update', updateTitle:'✏️ Update Entry',
-    installBanner:'💡 Save as app: tap Share 󰖀 → "Add to Home Screen"',
-    lang:'עב',
-    bulkFab:'📋 Bulk Import', bulkTitlePaste:'📋 Bulk Import', bulkTitleReview:'📋 Review before saving',
-    bulkCustomerLabel:'Customer Name', bulkTypeLabel:'Customer Type',
-    bulkPasteHint:'Paste the list you got (procedure + price per line)',
-    bulkPastePlaceholder:'Dog spaying 400\nFemur fracture 900\nUltrasound 200',
-    bulkParseBtn:'Parse List', bulkBack:'← Back to edit text',
-    bulkAddRow:'+ Add row manually', bulkSaveAll:'Save All',
-    bulkNoRows:'No rows found. Edit the text and try again.',
-    bulkWarnAnimal:'⚠ Check animal type', bulkWarnTotal:'⚠ This might be a total line, not an entry',
-    bulkWarnEmpty:'⚠ Needs a procedure', bulkWarnNumLeft:'⚠ Check the price',
-    bulkNeedCustomer:'Please enter a customer name'
+    save:'Save', cancel:'Cancel', delete:'Delete', edit:'Edit',
+    voiceTitle:'🎙 Voice Entry',
+    micStart:'🎙 Tap to Record', micStop:'🔴 Listening... tap to stop',
+    voiceHint:'Tap record → speak → fields auto-fill',
+    voiceOr:'or type directly',
+    voicePlaceholder:'e.g. "Silvia dog neuter 500 shekel"',
+    voiceDone:'✅ Filled! Edit if needed',
+    voiceTyping:'⌛ Detecting...',
+    manualEntry:'✏️ Manual Entry',
+    newCustomer:'New Customer',
+    customerName:'Customer Name',
+    backToList:'‹ All Customers',
+    searchPlaceholder:'Search customer...',
+    lang:'עב', total:'Total', services:'services', lastService:'Last service'
   }
 };
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────────
 function todayStr(){return new Date().toISOString().slice(0,10);}
 function fmtMonth(d){return d.slice(0,7);}
 function getMonthLabel(m){
@@ -305,513 +337,535 @@ function calcAmounts(price,inclVat){
   const vat=pre*VAT;
   return{pre:+pre.toFixed(2),vat:+vat.toFixed(2),total:+(pre+vat).toFixed(2)};
 }
+function fmt(n,dec=2){
+  // Format number with thousands commas and fixed decimals
+  return Number(n).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+}
 function emoji(a){return a==='dog'?'🐕':a==='cat'?'🐈':'🐾';}
 function typeColor(tp){return tp==='vet'?'#4ade80':'#60a5fa';}
-function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));}
-function load(){try{entries=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch{entries=[];}}
-const t = ()=>T[lang];
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify({entries,customers}));}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(d){
+      entries=d.entries||[];
+      customers=d.customers||[];
+    } else {
+      // Try legacy key
+      const legacy=JSON.parse(localStorage.getItem('vetbilling_pwa_v1'));
+      if(legacy){entries=legacy;customers=[];}
+    }
+  }catch{entries=[];customers=[];}
+  // Build customers list from entries if empty
+  if(!customers.length && entries.length){
+    const seen={};
+    entries.forEach(e=>{
+      if(!seen[e.customer]){seen[e.customer]=e.type;customers.push({name:e.customer,type:e.type});}
+    });
+  }
+}
+const t=()=>T[lang];
 
-function getCustomerNames(){
-  return[...new Set(entries.map(e=>e.customer).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'he'));
+// ── Customer helpers ────────────────────────────────────────────────────────────
+function getCustomerEntries(name){
+  return entries.filter(e=>e.customer===name);
+}
+function getCustomerTotal(name){
+  return getCustomerEntries(name).reduce((s,e)=>s+e.total,0);
+}
+function getCustomerInitial(name){
+  if(!name) return '?';
+  // Hebrew: return first char
+  return name.charAt(0);
+}
+function getAllCustomers(){
+  // Union of explicit customers list + names from entries
+  const fromEntries=[...new Set(entries.map(e=>e.customer))].filter(Boolean);
+  const allNames=[...new Set([...customers.map(c=>c.name),...fromEntries])];
+  return allNames.map(name=>{
+    const custObj=customers.find(c=>c.name===name);
+    const entriesForCust=getCustomerEntries(name);
+    const total=entriesForCust.reduce((s,e)=>s+e.total,0);
+    const lastDate=entriesForCust.length?entriesForCust.sort((a,b)=>b.date.localeCompare(a.date))[0].date:null;
+    return{name,type:custObj?custObj.type:(entriesForCust[0]?entriesForCust[0].type:'vet'),total,count:entriesForCust.length,lastDate};
+  }).sort((a,b)=>b.total-a.total);
 }
 
-function renderCustomerSuggestions(){
-  const box=document.getElementById('customer-suggestions');
-  if(!box) return;
-  const q=(entryForm.customer||'').trim();
-  if(!q){box.innerHTML='';box.style.display='none';return;}
-  const ql=q.toLowerCase();
-  const matches=getCustomerNames().filter(n=>n.toLowerCase().startsWith(ql)&&n.toLowerCase()!==ql).slice(0,8);
-  if(!matches.length){box.innerHTML='';box.style.display='none';return;}
-  box.style.display='block';
-  box.innerHTML=matches.map(n=>`<div class="customer-suggestion" onclick="selectCustomerSuggestion('${n.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">${n}</div>`).join('');
+// ── Parse / Voice helpers ──────────────────────────────────────────────────────
+function parseLocally(text){
+  const procs=PROCS[lang];
+  const tx=text.toLowerCase();
+  const priceMatch=text.match(/\d+/);
+  const basePrice=priceMatch?parseInt(priceMatch[0]):0;
+  const inclVat=!/ללא מעמ|לא כולל|without vat|excl/i.test(text);
+  let animal='dog';
+  if(/חתול|חתולה|cat/i.test(text)) animal='cat';
+  else if(/ארנב|עוף|ציפור|דג|סוס|rabbit|bird|fish|horse/i.test(text)) animal='other';
+  let procedure='';
+  let bestScore=0;
+  for(const proc of procs){
+    const words=proc.toLowerCase().split(/[\s,]+/);
+    let score=0;
+    for(const w of words){if(w.length>2&&tx.includes(w))score++;}
+    if(score>bestScore){bestScore=score;procedure=proc;}
+  }
+  if(!procedure){
+    if(/סירוס/.test(text)) procedure=procs.find(p=>/סירוס/.test(p)&&(animal==='cat'?/חתול/.test(p):/כלב/.test(p)))||procs[0];
+    else if(/עיקור/.test(text)) procedure=procs.find(p=>/עיקור/.test(p)&&(animal==='cat'?/חתולה/.test(p):/כלבה/.test(p)))||procs[1];
+    else if(/שיניים/.test(text)) procedure=procs.find(p=>/שיניים/.test(p))||''
+    else if(/שבר/.test(text)) procedure=procs.find(p=>/תיקון שבר/.test(p))||''
+    else if(/neuter/i.test(text)) procedure=animal==='cat'?procs[2]:procs[0];
+    else if(/spay/i.test(text)) procedure=animal==='cat'?procs[3]:procs[1];
+  }
+  let cleaned=text
+    .replace(/\d+\s*(שח|שקל|₪|ש"ח|ils|shek\w*)/gi,'')
+    .replace(/\d+/g,'')
+    .replace(/כולל\s*(מע"?מ|מעמ)?/gi,'').replace(/incl\s*(vat)?/gi,'')
+    .replace(/כלב|כלבה|חתול|חתולה|dog|cat/gi,'')
+    .replace(/סירוס|עיקור|ניקוי שיניים|שבר|גידול|פצע|neuter|spay/gi,'')
+    .replace(/[,.\n]+/g,' ').trim().replace(/\s+/g,' ');
+  const customer=cleaned.split(' ').filter(w=>w.length>1).join(' ').trim();
+  return{customer,type:'vet',animal,procedure,basePrice,inclVat};
 }
 
-function selectCustomerSuggestion(name){
-  entryForm.customer=name;
-  renderForm();
+function applyParsed(text){
+  const p=parseLocally(text);
+  if(p.customer) formData.customer=p.customer;
+  if(['vet','owner'].includes(p.type)) formData.type=p.type;
+  if(['dog','cat','other'].includes(p.animal)) formData.animal=p.animal;
+  if(p.procedure) formData.procedure=p.procedure;
+  if(p.basePrice) formData.basePrice=String(p.basePrice);
+  formData.inclVat=true;
+  voiceStatus='done';
+  renderFormModal();
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
+// ── Voice ──────────────────────────────────────────────────────────────────────
+function initRecognition(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return null;
+  const rec=new SR();
+  rec.lang=lang==='he'?'he-IL':'en-US';
+  rec.interimResults=true;
+  rec.continuous=false;
+  rec.maxAlternatives=1;
+  rec.onresult=(e)=>{
+    let final='',interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const tx=e.results[i][0].transcript;
+      if(e.results[i].isFinal) final+=tx;
+      else interim+=tx;
+    }
+    const display=final||interim;
+    if(display){
+      const ta=document.getElementById('voice-textarea');
+      if(ta){ta.value=display;ta.style.borderColor=final?'#4ade80':'#b8893a';}
+      voiceText=display;
+    }
+    if(final){
+      voiceStatus='done';recognition=null;
+      clearTimeout(debounceTimer);
+      debounceTimer=setTimeout(()=>applyParsed(final),400);
+    }
+  };
+  rec.onspeechstart=()=>{
+    const ta=document.getElementById('voice-textarea');
+    if(ta) ta.placeholder=lang==='he'?'מקשיב...':'Listening...';
+  };
+  rec.onerror=(e)=>{
+    recognition=null;voiceStatus='idle';
+    const ta=document.getElementById('voice-textarea');
+    if(ta){ta.style.borderColor='#f87171';ta.placeholder='Error: '+e.error;}
+    if(e.error==='not-allowed') alert(lang==='he'?'אפשר מיקרופון בהגדרות Safari':'Allow mic in Safari Settings');
+  };
+  rec.onend=()=>{
+    recognition=null;
+    const btn=document.querySelector('.mic-btn');
+    if(btn){btn.textContent=T[lang].micStart;btn.classList.remove('listening');}
+  };
+  return rec;
+}
+
+async function toggleMic(){
+  if(recognition){recognition.stop();recognition=null;voiceStatus='idle';renderVoiceBox();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    alert(lang==='he'?'הדפדפן לא תומך בהקלטה. השתמש בכפתור 🎤 במקלדת iOS.':'Voice not supported. Use the 🎤 key on your iOS keyboard.');
+    return;
+  }
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    stream.getTracks().forEach(tr=>tr.stop());
+  }catch(err){
+    alert(lang==='he'?'נא לאפשר גישה למיקרופון בהגדרות Safari':'Please allow microphone access in Safari settings');
+    return;
+  }
+  const rec=initRecognition();
+  recognition=rec;voiceStatus='listening';
+  renderVoiceBox();
+  rec.start();
+}
+
+function onVoiceInput(val){
+  voiceText=val;voiceStatus=val?'typing':'idle';
+  const ta=document.getElementById('voice-textarea');
+  if(ta){ta.className='voice-input'+(val?' typing':'');}
+  clearTimeout(debounceTimer);
+  if(!val.trim()){renderVoiceBox();return;}
+  renderVoiceBox();
+  debounceTimer=setTimeout(()=>applyParsed(val),800);
+}
+
+function clearVoice(){
+  voiceText='';voiceStatus='idle';
+  if(recognition){recognition.stop();recognition=null;}
+  renderFormModal();
+}
+
+// ── Render Home ────────────────────────────────────────────────────────────────
 function render(){
-  // Header
+  // Update header
   document.getElementById('header-name').textContent=lang==='he'?'ד״ר באסל חג׳אזי':'Dr. Basel Hajazi';
-  document.getElementById('header-count').textContent=`${entries.length} ${t().entries}`;
   document.getElementById('lang-btn').textContent=t().lang;
   document.documentElement.dir=lang==='he'?'rtl':'ltr';
-  // Tabs
-  document.getElementById('tab-log').textContent=t().log;
-  document.getElementById('tab-log').className='tab-btn'+(tab==='log'?' active':'');
-  document.getElementById('tab-summary').textContent=t().summary;
-  document.getElementById('tab-summary').className='tab-btn'+(tab==='summary'?' active':'');
-  document.getElementById('fab').textContent=t().add;
-  document.getElementById('fab2').textContent=t().bulkFab;
-  // Month filter only applies to the chronological Log tab — the Customer
-  // Summary tab is intentionally month-independent, so hide it there.
-  document.getElementById('month-filter').style.display=tab==='log'?'flex':'none';
-  renderMonthFilter();
-  renderContent();
-  
-}
+  document.getElementById('search-input').placeholder=t().searchPlaceholder;
+  document.getElementById('fab-home').textContent=t().addService;
+  document.getElementById('fab-detail').textContent=t().addService;
+  const _bbt=document.getElementById('back-btn-text');if(_bbt)_bbt.textContent=t().backToList;
 
-function renderMonthFilter(){
-  const months=[...new Set(entries.map(e=>fmtMonth(e.date)))].sort().reverse();
-  const chips=[{val:'all',label:t().allMonths},...months.map(m=>({val:m,label:getMonthLabel(m)}))];
-  document.getElementById('month-filter').innerHTML=chips.map(c=>
-    `<button class="month-chip${filterMonth===c.val?' active':''}" onclick="setFilter('${c.val}')">${c.label}</button>`
-  ).join('');
-}
-
-function filteredEntries(){
-  const fe=filterMonth==='all'?entries:entries.filter(e=>fmtMonth(e.date)===filterMonth);
-  return [...fe].sort((a,b)=>b.date.localeCompare(a.date));
-}
-
-function allEntriesSorted(){
-  return [...entries].sort((a,b)=>b.date.localeCompare(a.date));
-}
-
-function renderContent(){
-  if(tab==='log') renderLog(filteredEntries());
-  else renderSummary(allEntriesSorted());
-}
-
-function renderLog(sorted){
-  if(!sorted.length){
-    document.getElementById('tab-content').innerHTML=`<div class="empty">${t().noEntries}</div>`;
-    return;
-  }
-  document.getElementById('tab-content').innerHTML=sorted.map(e=>{
-    if(deleteId===e.id) return `
-      <div class="entry-card">
-        <div class="entry-row">
-          <div>
-            <div class="entry-name"><span>${e.customer}</span></div>
-            ${e.procedure?`<div class="entry-proc">${e.procedure}</div>`:''}
-            <div class="entry-date">${e.date}</div>
-          </div>
-          <div><div class="entry-total">₪${e.total.toFixed(2)}</div><div class="entry-vat">${t().vatLabel}: ₪${e.vat.toFixed(2)}</div></div>
-        </div>
-        <div class="del-confirm">
-          <button class="btn-sm btn-cancel" onclick="setDeleteId(null)">${t().cancel}</button>
-          <button class="btn-sm btn-del" onclick="deleteEntry(${e.id})">🗑 ${t().delete}</button>
-        </div>
-      </div>`;
-    return `
-      <div class="entry-card" style="cursor:pointer" onclick="openForm(${e.id})">
-        <div class="entry-row">
-          <div style="flex:1">
-            <div class="entry-name"><span>${e.customer}</span></div>
-            ${e.procedure?`<div class="entry-proc">${e.procedure}</div>`:''}
-            <div class="entry-date">${e.date}</div>
-          </div>
-          <div style="text-align:left;margin-inline-start:12px"><div class="entry-total">₪${e.total.toFixed(2)}</div><div class="entry-vat">${t().vatLabel}: ₪${e.vat.toFixed(2)}</div></div>
-        </div>
-        <button class="del-btn" onclick="event.stopPropagation();setDeleteId(${e.id})">✕</button>
-      </div>`;
-  }).join('');
-}
-
-function renderSummary(sorted){
-  const gTotal=sorted.reduce((s,e)=>s+e.total,0);
-  const gPre=sorted.reduce((s,e)=>s+e.pre,0);
-  const gVat=sorted.reduce((s,e)=>s+e.vat,0);
-  const byC={};
-  sorted.forEach(e=>{
-    if(!byC[e.customer]) byC[e.customer]={entries:[],total:0,pre:0,vat:0};
-    byC[e.customer].entries.push(e);
-    byC[e.customer].total+=e.total;
-    byC[e.customer].pre+=e.pre;
-    byC[e.customer].vat+=e.vat;
-  });
-  let html=`<div class="summary-card">
-    <div style="font-size:12px;color:#6fcf8a;margin-bottom:6px">${t().grandTotal}</div>
-    <div class="summary-total">₪${gTotal.toFixed(2)}</div>
-    <div class="summary-meta">
-      <div class="meta-item"><div class="label">${t().baseLabel}</div><div class="val">₪${gPre.toFixed(2)}</div></div>
-      <div class="meta-item"><div class="label">${t().vatLabel}</div><div class="val">₪${gVat.toFixed(2)}</div></div>
-      <div class="meta-item"><div class="label">${t().entries}</div><div class="val">${sorted.length}</div></div>
-    </div>
-  </div>`;
-  Object.entries(byC).sort((a,b)=>b[1].total-a[1].total).forEach(([name,data])=>{
-    const isOpen=expandedCustomers.has(name);
-    const safeName=name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    html+=`<div class="customer-card">
-      <div class="entry-row" style="cursor:pointer" onclick="toggleCustomerExpand('${safeName}')">
-        <div><div style="font-weight:700;font-size:15px">${isOpen?'▾':'▸'} ${name}</div><div style="font-size:11px;color:#5a8a68;margin-top:2px">${data.entries.length} ${t().entries}</div></div>
-        <div style="text-align:left"><div style="font-size:20px;font-weight:700;color:#4ade80">₪${data.total.toFixed(2)}</div><div style="font-size:11px;color:#3a6645">${t().vatLabel}: ₪${data.vat.toFixed(2)}</div></div>
-      </div>
-      ${isOpen?`<div class="cust-lines">${data.entries.map(e=>`
-        <div class="cust-line">
-          <span style="flex:1;cursor:pointer" onclick="openForm(${e.id})">${e.date}${e.procedure?' · '+e.procedure:''}</span>
-          <span style="color:#6fcf8a;font-weight:600;cursor:pointer" onclick="openForm(${e.id})">₪${e.total.toFixed(2)}</span>
-          <span class="cust-line-del" onclick="if(confirm(t().delete+'?'))deleteEntry(${e.id})">✕</span>
-        </div>`).join('')}</div>`:''}
-    </div>`;
-  });
-  if(sorted.length) html+=`<button class="export-btn" onclick="exportCSV()">📊 ${t().exportCSV}</button>`;
-  document.getElementById('tab-content').innerHTML=html;
-}
-
-function renderInstallBanner(){}
-
-// ── Form ──────────────────────────────────────────────────────────────────────
-function openForm(id){
-  if(id){
-    const e=entries.find(x=>x.id===id);
-    if(!e) return;
-    editingId=id;
-    entryForm={date:e.date,customer:e.customer,procedure:e.procedure||'',basePrice:String(e.basePrice||'')};
+  if(currentView==='home'){
+    renderHome();
   } else {
-    editingId=null;
-    entryForm={date:todayStr(),customer:'',procedure:'',basePrice:''};
+    renderDetail();
   }
-  formOpen=true;
-  document.getElementById('modal-title').textContent=editingId?t().updateTitle:t().add;
-  renderForm();
-  document.getElementById('modal').style.display='flex';
 }
 
-function closeForm(){
-  formOpen=false;
-  editingId=null;
-  document.getElementById('modal').style.display='none';
-}
+function renderHome(){
+  const allCusts=getAllCustomers();
+  const search=(document.getElementById('search-input')||{}).value||'';;
+  const filtered=search?allCusts.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())):allCusts;
 
-// ── Bulk Import ────────────────────────────────────────────────────────────────
-function openBulk(){
-  bulkStep='paste';
-  bulkCustomer='';
-  bulkType='owner';
-  bulkRawText='';
-  bulkRows=[];
-  bulkOpen=true;
-  renderBulk();
-  document.getElementById('bulk-modal').style.display='flex';
-}
+  // Stats
+  const totalRevenue=entries.reduce((s,e)=>s+e.total,0);
+  document.getElementById('home-stats').innerHTML=`
+    <div class="stat-chip"><div class="num">${allCusts.length}</div><div class="lbl">${t().customers}</div></div>
+    <div class="stat-sep"></div>
+    <div class="stat-chip"><div class="num">${entries.length}</div><div class="lbl">${t().entries}</div></div>
+    <div class="stat-sep"></div>
+    <div class="stat-chip"><div class="num">₪${fmt(totalRevenue,0)}</div><div class="lbl">${t().grandTotal}</div></div>
+  `;
+  document.getElementById('header-sub').textContent=`${allCusts.length} ${t().customers}`;
 
-function closeBulk(){
-  bulkOpen=false;
-  document.getElementById('bulk-modal').style.display='none';
-}
-
-function handleBulkOverlayClick(e){if(e.target.id==='bulk-modal') closeBulk();}
-
-function parseBulkAction(){
-  bulkRows=parseBulkRows(bulkRawText);
-  bulkStep='review';
-  renderBulk();
-}
-
-function backToBulkPaste(){
-  bulkStep='paste';
-  renderBulk();
-}
-
-function parseBulkRows(text){
-  const lines=(text||'').split('\n');
-  const rows=[];
-  for(let raw of lines){
-    let line=raw.trim();
-    if(!line) continue;
-    if(/^[-_—=\s]+$/.test(line)) continue; // separator line
-
-    let warn='';
-    let dateVal='';
-
-    // date like (3.8.26) or (03.08.2026)
-    const dateMatch=line.match(/\((\d{1,2})\.(\d{1,2})\.(\d{2,4})\)/);
-    const hadDate=!!dateMatch;
-    if(dateMatch){
-      let[,d,m,y]=dateMatch;
-      y=y.length===2?'20'+y:y;
-      dateVal=`${y.padStart(4,'0')}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
-      line=line.replace(dateMatch[0],' ');
-    }
-
-    // numeric-only paren (allowing internal spaces) = VAT-inclusive total
-    let basePrice='';
-    const vatMarker=/מע[\"׳״']?[מם]/gi; // handles both regular and final-entryForm mem
-    const vatParenMatch=line.match(/\(\s*(\d+)\s*\)/);
-    if(vatParenMatch){
-      basePrice=vatParenMatch[1];
-      line=line.replace(vatParenMatch[0],' ');
-      line=line.replace(new RegExp('\\d+\\s*\\+?\\s*'+vatMarker.source,'gi'),' ');
-    }
-
-    // non-numeric paren or quoted tag = note (e.g. cash)
-    let note='';
-    const tagParenMatch=line.match(/\(([^\d()]+)\)/)||line.match(/["\u05f4\u201c\u201d]([^"\u05f4\u201c\u201d]+)["\u05f4\u201c\u201d]/);
-    if(tagParenMatch){
-      note=tagParenMatch[1].trim();
-      line=line.replace(tagParenMatch[0],' ');
-    }
-
-    if(!basePrice){
-      const numMatch=line.match(/\d+/);
-      if(numMatch){
-        basePrice=numMatch[0];
-        line=line.replace(numMatch[0],' ');
-      }
-    }
-
-    line=line
-      .replace(new RegExp('\\+?\\s*'+vatMarker.source,'gi'),' ')
-      .replace(/=\s*\d+\s*\*/g,' ')
-      .replace(/["\u05f4\u201c\u201d]/g,' ')
-      .replace(/[*=]/g,' ')
-      .trim().replace(/\s+/g,' ');
-
-    // animal detection from original raw text
-    let animal='';
-    if(/חתול|חתולה|חתולים|cat/i.test(raw)) animal='cat';
-    else if(/כלב|כלבה|כלבים|dog/i.test(raw)) animal='dog';
-    else if(/ארנב|תוכי|ציפור|דג|סוס|עוף|rabbit|bird|fish|horse/i.test(raw)) animal='other';
-    if(!animal){animal='other';warn='animal';}
-
-    // strip animal words from procedure text (kept separately in animal field)
-    // longer forms first so e.g. "כלבה" isn't left as a stray "ה" after removing "כלב"
-    let procedure=line.replace(/כלבה|כלבים|כלב|חתולה|חתולים|חתול|dog|cat/gi,'').trim().replace(/\s+/g,' ');
-
-    const isCurrencyOnly=/^(שח|ש["\u05f4]?ח|₪|nis|ils)$/i.test(procedure);
-    if(!procedure||isCurrencyOnly){
-      procedure='';
-      warn=warn?warn+','+(hadDate?'empty':'total'):(hadDate?'empty':'total');
-    } else if(/^(שולם|סה["\u05f4]?כ|total|paid)/i.test(raw.trim())){
-      warn=warn?warn+',total':'total';
-    }
-
-    if(note) procedure=(procedure+' ('+note+')').trim();
-
-    // a stray digit left in the procedure text usually means the price
-    // extraction picked the wrong number on this line — flag for a human check
-    if(/\d/.test(procedure)) warn=warn?warn+',numleft':'numleft';
-
-    rows.push({
-      id:'r'+Date.now()+Math.random().toString(36).slice(2),
-      date:dateVal||todayStr(),
-      procedure,
-      basePrice,
-      inclVat:true,
-      animal,
-      warn
-    });
-  }
-  return rows;
-}
-
-function updateBulkRow(id,key,val){
-  const row=bulkRows.find(r=>r.id===id);
-  if(row) row[key]=val;
-}
-
-function removeBulkRow(id){
-  bulkRows=bulkRows.filter(r=>r.id!==id);
-  renderBulk();
-}
-
-function addBulkRowManual(){
-  bulkRows.push({id:'r'+Date.now()+Math.random().toString(36).slice(2),date:todayStr(),procedure:'',basePrice:'',inclVat:true,animal:'dog',warn:''});
-  renderBulk();
-}
-
-function saveBulkAll(){
-  if(!bulkCustomer.trim()){
-    alert(t().bulkNeedCustomer);
-    return;
-  }
-  let saved=0;
-  bulkRows.forEach((row,i)=>{
-    if(!row.procedure||!row.basePrice) return;
-    const{pre,vat,total}=calcAmounts(row.basePrice,row.inclVat);
-    entries.unshift({
-      date:row.date,customer:bulkCustomer.trim(),type:bulkType,animal:row.animal,
-      procedure:row.procedure,basePrice:row.basePrice,inclVat:row.inclVat,
-      pre,vat,total,id:Date.now()+i
-    });
-    saved++;
-  });
-  save();
-  closeBulk();
-  render();
-}
-
-function renderBulk(){
-  document.getElementById('bulk-modal-title').textContent=bulkStep==='paste'?t().bulkTitlePaste:t().bulkTitleReview;
-  const body=document.getElementById('bulk-modal-body');
-
-  if(bulkStep==='paste'){
-    body.innerHTML=`
-      <div class="field-label">${t().bulkCustomerLabel}</div>
-      <input type="text" class="field-input" value="${bulkCustomer}" placeholder="${t().bulkCustomerLabel}" oninput="bulkCustomer=this.value"/>
-
-      <div class="field-label">${t().bulkTypeLabel}</div>
-      <div class="toggle-row">
-        <button class="toggle-btn${bulkType==='vet'?' active-vet':''}" onclick="bulkType='vet';renderBulk()">${t().vet}</button>
-        <button class="toggle-btn${bulkType==='owner'?' active-owner':''}" onclick="bulkType='owner';renderBulk()">${t().owner}</button>
-      </div>
-
-      <div class="field-label">${t().bulkPasteHint}</div>
-      <textarea class="bulk-textarea" placeholder="${t().bulkPastePlaceholder}" oninput="bulkRawText=this.value">${bulkRawText}</textarea>
-
-      <div class="bottom-btns">
-        <button class="btn-cancel-lg" onclick="closeBulk()">${t().cancel}</button>
-        <button class="btn-save${bulkRawText.trim()?' ready':' disabled'}" onclick="parseBulkAction()">${t().bulkParseBtn}</button>
+  // Grid
+  let html='';
+  if(!filtered.length){
+    html=`<div class="no-customers"><div class="icon">🐾</div><p>${t().noCustomers}</p></div>`;
+  } else {
+    filtered.forEach(c=>{
+      const initials=getCustomerInitial(c.name);
+      const tc=typeColor(c.type);
+      const lastDateStr=c.lastDate?c.lastDate.slice(5).replace('-','/'):'';
+      html+=`<div class="customer-card-home" onclick="openCustomer('${c.name.replace(/'/g,'\\\'')}')" >
+        <div class="cust-avatar" style="color:${tc};border-color:${tc}33">${initials}</div>
+        <div class="cust-info">
+          <div class="cust-name">${c.name}</div>
+          <div class="cust-meta">${c.count} ${t().entries}${lastDateStr?' · '+lastDateStr:''}</div>
+        </div>
+        <div class="cust-total-home">
+          <div class="cust-total-num">₪${fmt(c.total,0)}</div>
+          <div class="cust-total-lbl">${t().total}</div>
+        </div>
+        <span class="cust-arrow">›</span>
       </div>`;
-    return;
+    });
   }
-
-  // review step
-  const rowsHtml=bulkRows.length?bulkRows.map(row=>{
-    const msgs=[];
-    if(row.warn.includes('total')) msgs.push(t().bulkWarnTotal);
-    if(row.warn.includes('empty')||!row.procedure) msgs.push(t().bulkWarnEmpty);
-    if(row.warn.includes('numleft')) msgs.push(t().bulkWarnNumLeft);
-    if(row.warn.includes('animal')) msgs.push(t().bulkWarnAnimal);
-    const warnText=msgs.join(' · ');
-    return `
-    <div class="bulk-row${row.warn||!row.procedure?' warn':''}">
-      <div class="bulk-row-top">
-        <input type="text" class="bulk-row-proc" value="${row.procedure}" placeholder="${t().procedure}" oninput="updateBulkRow('${row.id}','procedure',this.value)"/>
-        <input type="text" inputmode="decimal" autocomplete="off" class="bulk-row-price" value="${row.basePrice}" placeholder="0" oninput="this.value=this.value.replace(/,/g,'.').replace(/[^0-9.]/g,'');updateBulkRow('${row.id}','basePrice',this.value)"/>
-        <button class="bulk-row-del" onclick="removeBulkRow('${row.id}')">✕</button>
-      </div>
-      <div class="bulk-row-bottom">
-        <input type="date" class="bulk-row-date" value="${row.date}" onchange="updateBulkRow('${row.id}','date',this.value)"/>
-        <button class="bulk-mini-toggle${row.animal==='dog'?' active-animal':''}" onclick="updateBulkRow('${row.id}','animal','dog');renderBulk()">${t().dog}</button>
-        <button class="bulk-mini-toggle${row.animal==='cat'?' active-animal':''}" onclick="updateBulkRow('${row.id}','animal','cat');renderBulk()">${t().cat}</button>
-        <button class="bulk-mini-toggle${row.animal==='other'?' active-animal':''}" onclick="updateBulkRow('${row.id}','animal','other');renderBulk()">${t().other}</button>
-        <button class="bulk-mini-toggle${row.inclVat?' active-animal':''}" onclick="updateBulkRow('${row.id}','inclVat',!row.inclVat);renderBulk()">${t().inclVat} ${row.inclVat?t().yes:t().no}</button>
-        ${warnText?`<span class="bulk-warn-badge">${warnText}</span>`:''}
-      </div>
-    </div>`;
-  }).join(''):`<div class="empty" style="padding:20px 0">${t().bulkNoRows}</div>`;
-
-  const validCount=bulkRows.filter(r=>r.procedure&&r.basePrice).length;
-
-  body.innerHTML=`
-    <div class="field-label">${t().bulkCustomerLabel}</div>
-    <input type="text" class="field-input" value="${bulkCustomer}" placeholder="${t().bulkCustomerLabel}" oninput="bulkCustomer=this.value"/>
-
-    <div class="field-label">${t().bulkTypeLabel}</div>
-    <div class="toggle-row">
-      <button class="toggle-btn${bulkType==='vet'?' active-vet':''}" onclick="bulkType='vet';renderBulk()">${t().vet}</button>
-      <button class="toggle-btn${bulkType==='owner'?' active-owner':''}" onclick="bulkType='owner';renderBulk()">${t().owner}</button>
-    </div>
-
-    <div style="margin-bottom:10px">
-      <button class="btn-cancel-lg" style="width:100%;padding:9px;font-size:12px" onclick="backToBulkPaste()">${t().bulkBack}</button>
-    </div>
-
-    ${rowsHtml}
-
-    <button class="bulk-addrow" onclick="addBulkRowManual()">${t().bulkAddRow}</button>
-
-    <div class="bottom-btns">
-      <button class="btn-cancel-lg" onclick="closeBulk()">${t().cancel}</button>
-      <button class="btn-save${bulkCustomer.trim()&&validCount?' ready':' disabled'}" onclick="saveBulkAll()">${t().bulkSaveAll} (${validCount})</button>
-    </div>`;
+  document.getElementById('customer-grid').innerHTML=html;
 }
 
-function renderForm(){
-  const {pre,vat,total}=calcAmounts(entryForm.basePrice,true);
-  document.getElementById('modal-body').innerHTML=`
-    <!-- Date -->
-    <div class="field-label">${t().date}</div>
-    <input type="date" class="field-input" value="${entryForm.date}" onchange="entryForm.date=this.value"/>
-
-    <!-- Customer -->
-    <div class="field-label">${t().customer}</div>
-    <input type="text" id="customer-input" class="field-input" value="${entryForm.customer}" placeholder="${t().customer}" autocomplete="off" oninput="entryForm.customer=this.value;renderCustomerSuggestions()"/>
-    <div id="customer-suggestions" class="customer-suggestions" style="display:none"></div>
-
-    <!-- Amount (incl. VAT) -->
-    <div class="field-label">${t().amountLabel}</div>
-    <input type="text" inputmode="decimal" autocomplete="off" id="amount-input" class="field-input" value="${entryForm.basePrice}" placeholder="0.00" oninput="handleAmountInput(this)"/>
-
-    <!-- Free text: what it's for -->
-    <div class="field-label">${t().procedure}</div>
-    <textarea class="field-input" style="min-height:64px;resize:vertical" placeholder="${t().procedurePlaceholder}" oninput="entryForm.procedure=this.value">${entryForm.procedure}</textarea>
-
-    <!-- Price preview -->
-    <div id="price-preview-wrap">${entryForm.basePrice?`<div class="price-preview">
-      <span style="color:#5a8a68">${t().baseLabel}: ₪${pre.toFixed(2)}</span>
-      <span style="color:#5a8a68">${t().vatLabel}: ₪${vat.toFixed(2)}</span>
-      <span style="color:#4ade80;font-weight:700">₪${total.toFixed(2)}</span>
-    </div>`:''}</div>
-
-    <!-- Buttons -->
-    <div class="bottom-btns">
-      <button class="btn-cancel-lg" onclick="closeForm()">${t().cancel}</button>
-      <button id="save-btn" class="btn-save${entryForm.customer&&entryForm.basePrice?' ready':' disabled'}" onclick="saveEntry()">${editingId?t().update:t().save}</button>
-    </div>`;
+// ── Render Detail ──────────────────────────────────────────────────────────────
+function openCustomer(name){
+  selectedCustomer=name;
+  currentView='detail';
+  filterMonth='all';
+  document.getElementById('view-home').style.display='none';
+  document.getElementById('view-detail').style.display='flex';
+  renderDetail();
 }
 
-// Updates the amount field's value + price preview WITHOUT rebuilding
-// modal-body's innerHTML. Replacing the focused <input> node on every
-// keystroke is what was closing the keyboard after each digit.
-function handleAmountInput(el){
-  let v=el.value.replace(/,/g,'.').replace(/[^0-9.]/g,'');
-  const parts=v.split('.');
-  if(parts.length>2) v=parts[0]+'.'+parts.slice(1).join('');
-  if(v!==el.value){
-    const posFromEnd=el.value.length-(el.selectionEnd||el.value.length);
-    el.value=v;
-    const pos=Math.max(0,v.length-posFromEnd);
-    try{el.setSelectionRange(pos,pos);}catch(e){}
+function goHome(){
+  selectedCustomer=null;
+  currentView='home';
+  deleteId=null;
+  document.getElementById('view-detail').style.display='none';
+  document.getElementById('view-home').style.display='flex';
+  renderHome();
+}
+
+function renderDetail(){
+  const name=selectedCustomer;
+  if(!name) return;
+  const custEntries=getCustomerEntries(name);
+  const custObj=customers.find(c=>c.name===name);
+  const custType=custObj?custObj.type:(custEntries[0]?custEntries[0].type:'vet');
+  const tc=typeColor(custType);
+  const total=custEntries.reduce((s,e)=>s+e.total,0);
+  const vat=custEntries.reduce((s,e)=>s+e.vat,0);
+
+  // Header
+  document.getElementById('detail-avatar').textContent=getCustomerInitial(name);
+  document.getElementById('detail-avatar').style.color=tc;
+  document.getElementById('detail-name').textContent=name;
+  document.getElementById('detail-meta').textContent=`${custEntries.length} ${t().entries} · ${custType==='vet'?t().vet:t().owner}`;
+  document.getElementById('detail-total').textContent='₪'+fmt(total);
+  document.getElementById('detail-total-sub').textContent=t().grandTotal;
+
+  // Month filter
+  const months=[...new Set(custEntries.map(e=>fmtMonth(e.date)))].sort().reverse();
+  const chips=[{val:'all',label:t().allMonths},...months.map(m=>({val:m,label:getMonthLabel(m)}))];
+  document.getElementById('detail-month-filter').innerHTML=chips.map(c=>
+    `<button class="month-chip${filterMonth===c.val?' active':''}" onclick="setFilterDetail('${c.val}')">${c.label}</button>`
+  ).join('');
+
+  // Filtered entries
+  const filtered=(filterMonth==='all'?custEntries:custEntries.filter(e=>fmtMonth(e.date)===filterMonth))
+    .sort((a,b)=>b.date.localeCompare(a.date));
+
+  let html='';
+  if(!filtered.length){
+    html=`<div class="empty">${t().noEntries}</div>`;
+  } else {
+    filtered.forEach(e=>{
+      const etypeColor=typeColor(e.type);
+      const typeLbl=e.type==='vet'?t().vet:t().owner;
+      if(deleteId===e.id){
+        html+=`<div class="entry-card">
+          <div class="entry-row">
+            <div style="flex:1">
+              <div class="entry-proc">${e.procedure}</div>
+              <div class="entry-animal"><span class="type-badge" style="background:${etypeColor}22;color:${etypeColor}">${typeLbl}</span>${emoji(e.animal)} ${e.animal==='dog'?t().dog:e.animal==='cat'?t().cat:t().other}</div>
+              <div class="entry-date">${e.date}</div>
+            </div>
+            <div class="entry-amount"><div class="entry-total">₪${fmt(e.total)}</div><div class="entry-vat">${t().vatLabel}: ₪${fmt(e.vat)}</div></div>
+          </div>
+          <div class="del-confirm">
+            <button class="btn-xs btn-cancel" onclick="setDeleteId(null)">${t().cancel}</button>
+            <button class="btn-xs btn-del" onclick="deleteEntry(${e.id})">🗑 ${t().delete}</button>
+          </div>
+        </div>`;
+      } else {
+        html+=`<div class="entry-card">
+          <div class="entry-row">
+            <div style="flex:1">
+              <div class="entry-proc">${e.procedure}</div>
+              <div class="entry-animal"><span class="type-badge" style="background:${etypeColor}22;color:${etypeColor}">${typeLbl}</span>${emoji(e.animal)}</div>
+              <div class="entry-date">${e.date}</div>
+            </div>
+            <div class="entry-amount"><div class="entry-total">₪${fmt(e.total)}</div><div class="entry-vat">${t().vatLabel}: ₪${fmt(e.vat)}</div></div>
+          </div>
+          <div class="entry-actions">
+            <button class="btn-xs btn-edit" onclick="openEditEntry(${e.id})">✏️ ${t().edit}</button>
+            <button class="btn-xs btn-del" onclick="setDeleteId(${e.id})">🗑 ${t().delete}</button>
+          </div>
+        </div>`;
+      }
+    });
+    if(filtered.length){
+      html+=`<button class="export-btn" onclick="exportCSV()">📊 ${t().exportCSV}</button>`;
+    }
   }
-  entryForm.basePrice=v;
-  updatePricePreview();
+  document.getElementById('detail-content').innerHTML=html;
 }
 
-function updatePricePreview(){
-  const {pre,vat,total}=calcAmounts(entryForm.basePrice,true);
-  const wrap=document.getElementById('price-preview-wrap');
-  if(wrap){
-    wrap.innerHTML=entryForm.basePrice?`<div class="price-preview">
-      <span style="color:#5a8a68">${t().baseLabel}: ₪${pre.toFixed(2)}</span>
-      <span style="color:#5a8a68">${t().vatLabel}: ₪${vat.toFixed(2)}</span>
-      <span style="color:#4ade80;font-weight:700">₪${total.toFixed(2)}</span>
-    </div>`:'';
-  }
-  const saveBtn=document.getElementById('save-btn');
-  if(saveBtn) saveBtn.className=`btn-save${entryForm.customer&&entryForm.basePrice?' ready':' disabled'}`;
+// ── Actions ────────────────────────────────────────────────────────────────────
+function setFilterDetail(m){filterMonth=m;renderDetail();}
+function setDeleteId(id){deleteId=id;editId=null;renderDetail();}
+function deleteEntry(id){
+  entries=entries.filter(e=>e.id!==id);
+  deleteId=null;save();
+  // If customer now has no entries, keep them in customers list but check
+  renderDetail();
 }
 
-// ── Actions ───────────────────────────────────────────────────────────────────
 function toggleLang(){
   lang=lang==='he'?'en':'he';
   document.documentElement.lang=lang;
   document.documentElement.dir=lang==='he'?'rtl':'ltr';
   render();
-  if(formOpen) renderForm();
-}
-function setTab(t2){tab=t2;render();}
-function setFilter(m){filterMonth=m;render();}
-function setDeleteId(id){deleteId=id;renderContent();}
-function deleteEntry(id){entries=entries.filter(e=>e.id!==id);deleteId=null;save();render();}
-function dismissBanner(){showInstallBanner=false;}
-function toggleCustomerExpand(name){
-  if(expandedCustomers.has(name)) expandedCustomers.delete(name);
-  else expandedCustomers.add(name);
-  renderContent();
+  if(formOpen) renderFormModal();
 }
 
-function handleOverlayClick(e){if(e.target.id==='modal') closeForm();}
+// ── Form / Modal ───────────────────────────────────────────────────────────────
+function openNewCustomerOrEntry(){
+  // If no customers, or we want to add a service, open form
+  // The FAB on home opens the add-service modal pre-filled or asks for customer
+  formData={date:todayStr(),customer:selectedCustomer||'',type:'vet',animal:'dog',procedure:'',basePrice:'',inclVat:true};
+  voiceText='';voiceStatus='idle';editId=null;
+  formOpen=true;
+  document.getElementById('modal-title').textContent=t().addService;
+  renderFormModal();
+  document.getElementById('modal').style.display='flex';
+}
+
+function openAddService(){
+  formData={date:todayStr(),customer:selectedCustomer||'',type:'vet',animal:'dog',procedure:'',basePrice:'',inclVat:true};
+  voiceText='';voiceStatus='idle';editId=null;
+  formOpen=true;
+  document.getElementById('modal-title').textContent=`+ ${t().addEntry} — ${selectedCustomer}`;
+  renderFormModal();
+  document.getElementById('modal').style.display='flex';
+}
+
+function openEditEntry(id){
+  const e=entries.find(x=>x.id===id);
+  if(!e) return;
+  editId=id;
+  formData={date:e.date,customer:e.customer,type:e.type,animal:e.animal,procedure:e.procedure,basePrice:String(e.inclVat!==false?e.total:e.pre),inclVat:e.inclVat!==false};
+  voiceText='';voiceStatus='idle';
+  formOpen=true;
+  document.getElementById('modal-title').textContent='✏️ '+(lang==='he'?'עריכת רשומה':'Edit Entry');
+  renderFormModal();
+  document.getElementById('modal').style.display='flex';
+}
+
+function closeModal(){
+  formOpen=false;
+  document.getElementById('modal').style.display='none';
+  if(recognition){recognition.stop();recognition=null;}
+}
+
+function handleOverlayClick(e){if(e.target.id==='modal') closeModal();}
+
+function renderFormModal(){
+  const procs=PROCS[lang];
+  const {pre,vat,total}=calcAmounts(formData.basePrice,formData.inclVat);
+  const allCustNames=getAllCustomers().map(c=>c.name);
+
+  document.getElementById('modal-body').innerHTML=`
+    <!-- Voice Box -->
+    <div class="voice-box">
+      <div class="voice-title">
+        <div class="voice-title-left"><span>🎙</span>${t().voiceTitle}</div>
+        <span class="voice-status" style="color:${voiceStatus==='done'?'#4ade80':voiceStatus==='typing'||voiceStatus==='listening'?'#b8893a':'transparent'}">
+          ${voiceStatus==='done'?t().voiceDone:voiceStatus==='typing'?t().voiceTyping:voiceStatus==='listening'?'🔴':'&nbsp;'}
+        </span>
+      </div>
+      <div class="voice-hint">
+        <div class="voice-hint-icon">💡</div>
+        <div class="voice-hint-text">${t().voiceHint}</div>
+      </div>
+      <textarea id="voice-textarea" class="voice-input${voiceStatus==='done'?' done':voiceStatus==='typing'?' typing':''}" rows="2"
+        placeholder="${t().voicePlaceholder}" oninput="onVoiceInput(this.value)">${voiceText}</textarea>
+      ${voiceText?`<button class="voice-clear" onclick="clearVoice()">✕ ${lang==='he'?'נקה':'Clear'}</button>`:''}
+      <div class="mic-row">
+        <button class="mic-btn${voiceStatus==='listening'?' listening':''}" onclick="toggleMic()">
+          ${voiceStatus==='listening'?t().micStop:t().micStart}
+        </button>
+      </div>
+    </div>
+
+    <div class="divider"><div class="divider-line"></div><span class="divider-text">${t().manualEntry}</span><div class="divider-line"></div></div>
+
+    <!-- Date -->
+    <div class="field-label">${t().date}</div>
+    <input type="date" class="field-input" value="${formData.date}" onchange="formData.date=this.value"/>
+
+    <!-- Customer -->
+    <div class="field-label">${t().customer}</div>
+    <input type="text" class="field-input" id="cust-input" value="${formData.customer}" 
+      placeholder="${t().customerName}" oninput="formData.customer=this.value" list="cust-list"/>
+    <datalist id="cust-list">${allCustNames.map(n=>`<option value="${n}">`).join('')}</datalist>
+
+    <!-- Type -->
+    <div class="field-label">${t().type}</div>
+    <div class="toggle-row">
+      <button class="toggle-btn${formData.type==='vet'?' active-vet':''}" onclick="formData.type='vet';renderFormModal()">${t().vet}</button>
+      <button class="toggle-btn${formData.type==='owner'?' active-owner':''}" onclick="formData.type='owner';renderFormModal()">${t().owner}</button>
+    </div>
+
+    <!-- Animal -->
+    <div class="field-label">${t().animal}</div>
+    <div class="toggle-row">
+      <button class="toggle-btn${formData.animal==='dog'?' active-animal':''}" onclick="formData.animal='dog';renderFormModal()">${t().dog}</button>
+      <button class="toggle-btn${formData.animal==='cat'?' active-animal':''}" onclick="formData.animal='cat';renderFormModal()">${t().cat}</button>
+      <button class="toggle-btn${formData.animal==='other'?' active-animal':''}" onclick="formData.animal='other';renderFormModal()">${t().other}</button>
+    </div>
+
+    <!-- Procedure -->
+    <div class="field-label">${t().procedure}</div>
+    <input type="text" class="field-input" value="${formData.procedure}"
+      placeholder="${t().procedure}" oninput="formData.procedure=this.value" list="proc-list"/>
+    <datalist id="proc-list">${procs.map(p=>`<option value="${p}">`).join('')}</datalist>
+
+    <!-- Price -->
+    <div class="field-label">${t().basePrice}</div>
+    <input type="text" inputmode="decimal" class="field-input" value="${formData.basePrice}" placeholder="0.00" oninput="formData.basePrice=this.value;renderFormModal()"/>
+
+    <!-- VAT toggle -->
+    <div class="vat-row">
+      <span style="font-size:13px;color:#6fcf8a">${t().inclVat}</span>
+      <button class="vat-switch" style="background:${formData.inclVat?'#4ade80':'#1a3d23'}" onclick="formData.inclVat=!formData.inclVat;renderFormModal()">
+        <div class="vat-knob" style="left:${formData.inclVat?'22px':'3px'};background:${formData.inclVat?'#0d1a12':'#3a6645'}"></div>
+      </button>
+      <span style="font-size:12px;color:#3a6645">
+        ${formData.inclVat?t().yes:t().no}${formData.basePrice?' · ₪'+fmt(calcAmounts(formData.basePrice,formData.inclVat).total):''}
+      </span>
+    </div>
+
+    ${formData.basePrice?`<div class="price-preview">
+      <span style="color:#5a8a68">${t().baseLabel}: ₪${fmt(pre)}</span>
+      <span style="color:#5a8a68">${t().vatLabel}: ₪${fmt(vat)}</span>
+      <span style="color:#4ade80;font-weight:700">₪${fmt(total)}</span>
+    </div>`:''}
+
+    <div class="bottom-btns">
+      <button class="btn-cancel-lg" onclick="closeModal()">${t().cancel}</button>
+      <button class="btn-save${formData.customer&&formData.procedure&&formData.basePrice?' ready':' disabled'}" onclick="saveEntry()">${t().save}</button>
+    </div>`;
+}
+
+function renderVoiceBox(){
+  if(!formOpen) return;
+  const ta=document.getElementById('voice-textarea');
+  const scrollTop=ta?ta.scrollTop:0;
+  renderFormModal();
+  const ta2=document.getElementById('voice-textarea');
+  if(ta2){ta2.value=voiceText;ta2.scrollTop=scrollTop;}
+}
 
 function saveEntry(){
-  if(!entryForm.customer||!entryForm.basePrice) return;
-  const{pre,vat,total}=calcAmounts(entryForm.basePrice,true);
-  if(editingId){
-    const idx=entries.findIndex(e=>e.id===editingId);
-    if(idx!==-1){
-      entries[idx]={...entries[idx],date:entryForm.date,customer:entryForm.customer,procedure:entryForm.procedure,basePrice:entryForm.basePrice,inclVat:true,pre,vat,total};
-    }
-    editingId=null;
+  if(!formData.customer||!formData.procedure||!formData.basePrice) return;
+  const{pre,vat,total}=calcAmounts(formData.basePrice,formData.inclVat);
+  if(editId){
+    const idx=entries.findIndex(e=>e.id===editId);
+    if(idx>=0) entries[idx]={...formData,pre,vat,total,id:editId,inclVat:formData.inclVat};
   } else {
-    entries.unshift({date:entryForm.date,customer:entryForm.customer,procedure:entryForm.procedure,basePrice:entryForm.basePrice,inclVat:true,pre,vat,total,id:Date.now()});
+    entries.unshift({...formData,pre,vat,total,id:Date.now(),inclVat:formData.inclVat});
   }
-  save(); closeForm(); render();
+  // Ensure customer is in customers list
+  if(!customers.find(c=>c.name===formData.customer)){
+    customers.push({name:formData.customer,type:formData.type});
+  }
+  editId=null;
+  save();closeModal();
+  // If we have a selected customer, stay on detail; else go there
+  if(currentView==='detail'){
+    renderDetail();
+  } else {
+    // If we added for a specific customer, navigate there
+    openCustomer(formData.customer);
+  }
+}
+
+function exportCSV(){
+  const custEntries=getCustomerEntries(selectedCustomer)
+    .filter(e=>filterMonth==='all'||fmtMonth(e.date)===filterMonth)
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  const rows=[['Date','Customer','Type','Animal','Procedure','Pre-VAT','VAT','Total'],
+    ...custEntries.map(e=>[e.date,e.customer,e.type,e.animal,e.procedure,e.pre,e.vat,e.total])];
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`vet-${selectedCustomer}-${filterMonth}.csv`;a.click();
 }
 
 function spinLogo(){
@@ -820,20 +874,10 @@ function spinLogo(){
   img.style.transform=`rotate(${logoSpins*360}deg)`;
 }
 
-function exportCSV(){
-  const sorted=allEntriesSorted();
-  const rows=[['Date','Customer','Note','Pre-VAT','VAT','Total'],
-    ...sorted.map(e=>[e.date,e.customer,e.procedure||'',e.pre,e.vat,e.total])];
-  const csv=rows.map(r=>r.join(',')).join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`vet-all-customers.csv`;a.click();
-}
-
-// ── Service Worker ────────────────────────────────────────────────────────────
+// ── Service Worker ─────────────────────────────────────────────────────────────
 if('serviceWorker' in navigator){
   const sw=`
-    const CACHE='vetbilling-v1';
+    const CACHE='vetbilling-v2';
     self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./',location.pathname]))));
     self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
   `;
@@ -841,71 +885,63 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
 }
 
-// ── One-time seed data (5 customers imported 2026-08-30) ──────────────────────
-// Guessed animal types are marked with a trailing comment where uncertain;
-// these can be corrected later via the normal edit UI.
-const SEED_V1_KEY='vetbilling_seed_v1_applied';
-const SEED_ENTRIES_V1=[
-  // חסן עבד (chow)
-  {date:'2026-08-30',customer:'חסן עבד (chow)',type:'owner',animal:'dog',procedure:'עיקור+פרולפס ואגינאלי',basePrice:'800',inclVat:true},
-  {date:'2026-08-30',customer:'חסן עבד (chow)',type:'owner',animal:'dog',procedure:'עיקור כלבה',basePrice:'400',inclVat:true},
-  {date:'2026-08-30',customer:'חסן עבד (chow)',type:'owner',animal:'dog',procedure:'שבר פימור',basePrice:'900',inclVat:true},
-  {date:'2026-08-30',customer:'חסן עבד (chow)',type:'owner',animal:'dog',procedure:'אולטראסונד',basePrice:'200',inclVat:true},
-  {date:'2026-08-30',customer:'חסן עבד (chow)',type:'owner',animal:'dog',procedure:'הסרת ראש פימור',basePrice:'1100',inclVat:true},
-  {date:'2026-08-30',customer:'חסן עבד (chow)',type:'owner',animal:'dog',procedure:'שבר רדיוס אולנה (מזומן)',basePrice:'1300',inclVat:true},
-  {date:'2026-08-30',customer:'חסן עבד (chow)',type:'owner',animal:'dog',procedure:'עיקור כלבה',basePrice:'400',inclVat:true},
-
-  // Silvia
-  {date:'2026-08-30',customer:'Silvia',type:'owner',animal:'dog',procedure:'שבת+ניתוחים',basePrice:'1500',inclVat:true},
-  {date:'2026-08-30',customer:'Silvia',type:'owner',animal:'dog',procedure:'חירום',basePrice:'300',inclVat:true},
-
-  // Paws
-  {date:'2026-08-30',customer:'Paws',type:'owner',animal:'cat',procedure:'פריניאל אורטוסטומיה',basePrice:'1200',inclVat:true}, // near-exclusively a feline procedure
-  {date:'2026-08-30',customer:'Paws',type:'owner',animal:'dog',procedure:'עיקור כלבה',basePrice:'400',inclVat:true},
-  {date:'2026-08-30',customer:'Paws',type:'owner',animal:'dog',procedure:'עיקור כלבה',basePrice:'400',inclVat:true},
-  {date:'2026-08-30',customer:'Paws',type:'owner',animal:'dog',procedure:'הוצאת עין+עיקור',basePrice:'1300',inclVat:true},
-
-  // סמיח
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:"צ'רי איי",basePrice:'708',inclVat:true}, // cherry eye - almost always canine
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:'אנקלוציה ענבל',basePrice:'590',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:'עיקור גדולה',basePrice:'250',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:"צ'רי איי",basePrice:'708',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:'קיצור חך רך',basePrice:'944',inclVat:true}, // brachycephalic airway surgery - canine
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:'הסרת ראש פימור',basePrice:'1180',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:'הסרת ראש פימור',basePrice:'1180',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'cat',procedure:'הרניה סרעפתית',basePrice:'944',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:"צ'רי איי",basePrice:'708',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'cat',procedure:'פירניאל אורטוסטומיה',basePrice:'1200',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:'שבר פימור (מזומן)',basePrice:'1300',inclVat:true},
-  {date:'2026-08-30',customer:'סמיח',type:'owner',animal:'dog',procedure:'טייקא באוזן',basePrice:'944',inclVat:true},
-
-  // כרמאיל (boarding) - August daily entries only; July lump total excluded (see chat)
-  {date:'2026-08-03',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'1300',inclVat:true},
-  {date:'2026-08-04',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'1000',inclVat:true},
-  {date:'2026-08-06',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'1100',inclVat:true},
-  {date:'2026-08-11',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'1000',inclVat:true},
-  {date:'2026-08-18',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'700',inclVat:true},
-  {date:'2026-08-20',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'1100',inclVat:true},
-  {date:'2026-08-23',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'800',inclVat:true},
-  {date:'2026-08-24',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'800',inclVat:true},
-  {date:'2026-08-26',customer:'כרמאיל',type:'owner',animal:'cat',procedure:'פנסיון/אחסנה',basePrice:'700',inclVat:true},
+// ── Init — always load from the canonical Notes data, wipe anything else ────────
+entries=[];customers=[];
+const seed=[
+  // Animall
+  {date:'2026-09-01',customer:'Animall',   type:'vet',animal:'dog',procedure:'שבר טיביה',          basePrice:'2000',inclVat:false},
+  // אשרף  (pre-VAT; notes total 7260 = 800+2500+3960)
+  {date:'2026-09-01',customer:'אשרף',      type:'vet',animal:'dog',procedure:'ציסטוטומיה',          basePrice:'800', inclVat:false},
+  {date:'2026-09-01',customer:'אשרף',      type:'vet',animal:'dog',procedure:'שבר אגן+פימור',       basePrice:'2500',inclVat:false},
+  {date:'2026-09-01',customer:'אשרף',      type:'vet',animal:'dog',procedure:'שעות עבודה 27',       basePrice:'3960',inclVat:false},
+  // Silvia (pre-VAT; notes total 7700 ✓)
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'אולטראסונד',           basePrice:'300', inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'צינור הזנה',           basePrice:'400', inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'אולטראסונדים',         basePrice:'500', inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'אולטראסונד',           basePrice:'300', inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבת',                  basePrice:'1000',inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבר הומרוס',           basePrice:'2000',inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'הסרת מסה',             basePrice:'500', inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבר פימור',            basePrice:'1700',inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שני',                  basePrice:'500', inclVat:false},
+  {date:'2026-09-01',customer:'Silvia',    type:'vet',animal:'dog',procedure:'שבת',                  basePrice:'500', inclVat:false},
+  // סמיח — all prices are pre-VAT as written in notes; parentheses = incl-VAT shown for reference only
+  // Notes total: תשלום במזומן 2100 + העברה 11834 = payments received, not charges — excluded
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי מזומן",     basePrice:'400', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'אנקלוזיה ענבל',       basePrice:'500', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'עיקור גדולה בהריון',  basePrice:'250', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי מזומן",     basePrice:'400', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'קיצור חך רך',         basePrice:'800', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הסרת ראש פימור',      basePrice:'1000',inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הסרת ראש פימור',      basePrice:'1000',inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הרניה סרעפתית חתול',  basePrice:'800', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי",           basePrice:'600', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'פירניאל אורטוסטומיה', basePrice:'1200',inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'שבר פימור מזומן',     basePrice:'1300',inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'טייקא באוזן',         basePrice:'800', inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'הסרת ראש פימור',      basePrice:'1000',inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:'שבר רדיוס אולנה',     basePrice:'1700',inclVat:false},
+  {date:'2026-09-01',customer:'סמיח',      type:'vet',animal:'dog',procedure:"צ'ריי איי",           basePrice:'600', inclVat:false},
+  // כרמאיל — bulk cat neutering, pre-VAT per batch
+  {date:'2026-07-31',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x29',    basePrice:'2900',inclVat:false},
+  {date:'2026-08-31',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x94',    basePrice:'9400',inclVat:false},
+  {date:'2026-09-08',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x11',    basePrice:'1100',inclVat:false},
+  {date:'2026-09-14',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x7',     basePrice:'700', inclVat:false},
+  {date:'2026-09-29',customer:'כרמאיל',    type:'vet',animal:'cat',procedure:'סירוס חתולים x10',    basePrice:'1000',inclVat:false},
 ];
+seed.forEach((e,i)=>{
+  const{pre,vat,total}=calcAmounts(e.basePrice,e.inclVat);
+  entries.push({...e,pre,vat,total,id:Date.now()+i});
+});
+customers=[
+  {name:'Animall', type:'vet'},
+  {name:'אשרף',    type:'vet'},
+  {name:'Silvia',  type:'vet'},
+  {name:'סמיח',    type:'vet'},
+  {name:'כרמאיל',  type:'vet'},
+];
+save();
 
-function applySeedIfNeeded(){
-  try{
-    if(localStorage.getItem(SEED_V1_KEY)) return;
-    SEED_ENTRIES_V1.forEach((e,i)=>{
-      const{pre,vat,total}=calcAmounts(e.basePrice,e.inclVat);
-      entries.push({...e,pre,vat,total,id:Date.now()+i});
-    });
-    localStorage.setItem(SEED_V1_KEY,'1');
-    save();
-  }catch(err){/* fail silently, never block app load */}
-}
-
-// ── Init ──────────────────────────────────────────────────────────────────────
-load();
-applySeedIfNeeded();
 render();
 document.getElementById('logo-img').addEventListener('click',spinLogo);
 </script>
